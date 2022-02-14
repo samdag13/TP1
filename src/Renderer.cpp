@@ -59,8 +59,8 @@ void Renderer::setup() {
 void Renderer::update() {
 	//convertir la value du intSlider en int
 	ofParameter<int> p = intSlider.getParameter().cast<int>();
-	int moinsintSlider = nbrIntSlider - (nbrIntSlider - p);
-	int plusintSlider = nbrIntSlider + (p - nbrIntSlider);
+	int moinsintSlider = nbrIntSlider - 1;
+	int plusintSlider = nbrIntSlider + 1;
 	int nbrEnlever = pow(4,count);
 
 	//ofLog() << "p : " << p;
@@ -82,7 +82,7 @@ void Renderer::update() {
 	else
 		if (plusintSlider == p)			
 		{
-			    //ofLog() << "entré dans le push";
+			//ofLog() << "entré dans le push";
 				for (it = arbre.begin(); it != arbre.end(); it++)
 				{
 					
