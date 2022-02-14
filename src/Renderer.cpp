@@ -3,8 +3,8 @@
 void Renderer::setup() {
 	gui.setup();
 
-	gui.add(intSlider.setup("int slider", 1, 0, 6));
-	gui.add(floatSlider.setup("float slider", 0.0, 0.0, 2 * PI));
+	gui.add(intSlider.setup("Nombre de couches", 1, 0, 6));
+	gui.add(floatSlider.setup("Angle", 0.0, 0.0, 2 * PI));
 
 	//convertir la value du intSlider en int
 	ofParameter<int> p = intSlider.getParameter().cast<int>();
@@ -93,11 +93,9 @@ void Renderer::update() {
 	else
 		if (p > p_previous)			
 		{
-			ofLog() << "entré dans le push";
 			for (int i = p_previous; i != p; i++) {
 				for (it = arbre.begin(); it != arbre.end(); it++)
 				{
-					ofLog() << it->finished;
 
 					if (!it->finished)
 					{
