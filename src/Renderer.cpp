@@ -68,6 +68,7 @@ void Renderer::update() {
 
 	if (p < p_previous)
 	{
+		int nbrEnlever = 0;
 		//ofLog() << "entré dans le pop";
 		for (int i = p_previous; i != p; i--) {
 			int nbrEnlever = pow(4, count);
@@ -79,9 +80,13 @@ void Renderer::update() {
 
 		}
 
-		for (it = arbre.begin(); it != arbre.end(); it++)
+		it = arbre.begin();
+
+		nbrEnlever = pow(4, count);
+		for (int i = 0; i < nbrEnlever; i++)
 		{
 			it->finished = false;
+			it++;
 
 		}
 	}
