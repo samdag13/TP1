@@ -12,6 +12,9 @@ public:
 	int depart_y;
 	int longueurLigne;
 
+	int p_previous = 0;
+	ofParameter<int> p = 1;
+
 	//compter le nombre d'étages
 	int count;
 
@@ -24,7 +27,7 @@ public:
 	float angle3 = PI / 8;
 	float angle4 = PI / 4;
 
-	float scale = 0.5;
+	float scale = 0.75;
 
 	//vecteurs pour commencer la première branche
 	ofVec4f v1;

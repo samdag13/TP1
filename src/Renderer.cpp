@@ -11,7 +11,7 @@ void Renderer::setup() {
 	nbrIntSlider = p;
 
 	ofBackground(50);
-	ofSetFrameRate(1);
+	//ofSetFrameRate(1);
 
 	depart_x = ofGetWindowWidth() / 2;
 	depart_y = ofGetWindowHeight();
@@ -58,46 +58,54 @@ void Renderer::setup() {
 
 void Renderer::update() {
 	//convertir la value du intSlider en int
-	ofParameter<int> p = intSlider.getParameter().cast<int>();
-	int moinsintSlider = nbrIntSlider - 1;
-	int plusintSlider = nbrIntSlider + 1;
-	int nbrEnlever = pow(4,count);
+	 p_previous = p;
+	 p = intSlider.getParameter().cast<int>();
+
 
 	//ofLog() << "p : " << p;
-	//ofLog() << "moinsintSlider : " << moinsintSlider;
-	//ofLog() << "plusintSlider : " << plusintSlider;
-	//ofLog() << "-------------------------------";
+	//ofLog() << "p_previous : " <<p_previous;
 
 
-	if (moinsintSlider == p)
+	if (p < p_previous)
 	{
 		//ofLog() << "entré dans le pop";
-		for (int i = 0; i < nbrEnlever; i++)
-		{		
-			arbre.pop_front();				
+		for (int i = p_previous; i != p; i--) {
+			int nbrEnlever = pow(4, count);
+			for (int i = 0; i < nbrEnlever; i++)
+			{
+				arbre.pop_front();
+			}
+			count--;
+
 		}
-		count--;
-		nbrIntSlider--;
+
+		for (it = arbre.begin(); it != arbre.end(); it++)
+		{
+			it->finished = false;
+
+		}
 	}
 	else
-		if (plusintSlider == p)			
+		if (p > p_previous)			
 		{
-			//ofLog() << "entré dans le push";
+			ofLog() << "entré dans le push";
+			for (int i = p_previous; i != p; i++) {
 				for (it = arbre.begin(); it != arbre.end(); it++)
 				{
-					
+					ofLog() << it->finished;
+
 					if (!it->finished)
-					{						
+					{
 						arbre.push_front(it->branche(angle1, scale));
 						arbre.push_front(it->branche(angle2, scale));
 						arbre.push_front(it->branche(angle3, scale));
 						arbre.push_front(it->branche(angle4, scale));
 						it->finished = true;
-					}
-					
+					}	
+
 				}
 				count++;
-				nbrIntSlider++;
+			}
 		}
 
 }

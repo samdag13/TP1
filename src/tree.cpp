@@ -63,5 +63,5 @@ void Tree::showellipse() {
 }
 
 Tree::~Tree() {
-	ofLog() << "objet détruit";
+	//ofLog() << "objet détruit";
 };
