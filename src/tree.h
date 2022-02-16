@@ -6,15 +6,14 @@ class Tree
 {
 public:
 	//constructeur
-	Tree(ofVec4f vi, ofVec4f vf);
+	Tree(ofVec4f vi, ofVec4f vf, int id);
+
+	//id pour savoir quelle branche on a
+	int m_id;
 
 	//pour avoir acces à vi et vf en tout temps
 	ofVec4f v1;
 	ofVec4f v2;
-
-	//pour avoir acces à l'angle et au scale en tout temps
-	float angle1;
-	float scale1;
 
 	//transformer les v4 (debut et fin) en v2 pour etre capable de dessiner
 	ofVec2f vi2;
@@ -45,7 +44,9 @@ public:
 	//afficher des feuilles
 	void showellipse();
 
-	Tree branche(float angle, float scale);
+	void modifier_branche(ofVec4f vi, ofVec4f vf, float angle, float scale);
+
+	Tree branche(float angle, float scale, int id);
 
 	~Tree();
 
