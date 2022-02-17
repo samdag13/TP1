@@ -51,9 +51,6 @@ void Renderer::update() {
 	//convertir la value du intSlider en int
 	 p_previous = p;
 	 p = intSlider.getParameter().cast<int>();
-	 
-	//ofLog() << "p : " << p;
-	//ofLog() << "p_previous : " <<p_previous;
 
 	//pour les couhes
 	if (p < p_previous)
@@ -118,9 +115,6 @@ void Renderer::update() {
 			case 1:
 				arbre[j].modifier_branche(arbre[j - ecart_avec_tronc].v1, arbre[j - ecart_avec_tronc].v2, -a, s);
 				ecart_avec_tronc++;
-				//ofLog() << "v1 : " << arbre[j].v1;
-				//ofLog() << "v2 : " << arbre[j].v2;
-				//ofLog() << "angle : " << arbre[j].m_angle;
 				break;
 
 			case 2:
