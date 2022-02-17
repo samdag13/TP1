@@ -3,7 +3,7 @@
 void Renderer::setup() {
 	gui.setup();
 
-	gui.add(intSlider.setup("Nombre de couches", 1, 0, 6));
+	gui.add(intSlider.setup("Nombre de couches", 1, 0, 7));
 	gui.add(floatSlider1.setup("Angle", PI/4, 0.0, 2 * PI));
 	gui.add(floatSlider2.setup("Scale", 0.5, 0.0, 2));
 
@@ -13,7 +13,7 @@ void Renderer::setup() {
 	s = floatSlider2.getParameter().cast<float>();
 
 	ofBackground(50);
-	//ofSetFrameRate(1);
+	ofSetFrameRate(144);
 
 	depart_x = ofGetWindowWidth() / 2;
 	depart_y = ofGetWindowHeight();
@@ -24,13 +24,9 @@ void Renderer::setup() {
 	v2.set(0, -longueurLigne, 1, 1);
 
 	//premiere branche
-	Tree tree(v1, v2, 0);
+	Tree tree(v1, v2, 0, 0);
 	arbre.push_back(tree);
 
-	ofLog() << "un tree en octet : " << sizeof(tree);
-	ofLog() << "debut list : " << &arbre.begin();
-	ofLog() << "fin list : " << &arbre.end();
-	ofLog() << "size vect : " << arbre.size();
 	//les autres branches
 	for (int i = 0; i < p; i++)
 	{
@@ -47,16 +43,6 @@ void Renderer::setup() {
 			
 		}
 		count++;
-		//ofLog() << "fin list : " << &arbre.end();
-		//mettre des feuilles au bouts de chaque branche si count = 5 (ne fonctionne pas correctement)
-		//if (count == 5)
-		//{
-		//	for (it = arbre.begin(); it != arbre.end(); it++)
-		//	{
-		//		Tree feuille(it->v1, it->v2);
-		//		feuilles.push_front(feuille);
-		//	}
-		//}
 	}
 	
 }
@@ -66,7 +52,6 @@ void Renderer::update() {
 	 p_previous = p;
 	 p = intSlider.getParameter().cast<int>();
 	 
-
 	//ofLog() << "p : " << p;
 	//ofLog() << "p_previous : " <<p_previous;
 
@@ -116,33 +101,40 @@ void Renderer::update() {
 			}
 		}
 
-	//l'angle (doit etre par rapport à lui meme)
+	//l'angle (doit etre par rapport à la branche mere)
 	a_previous = a;
 	a = floatSlider1.getParameter().cast<float>();
 	if (a != a_previous)
 	{
-		for (int j = arbre.size()-1; j >= 0; j--)
+		int ecart_avec_tronc = 1;
+		for (int j = 1; j < arbre.size(); j++)
 		{
 			int id = arbre[j].m_id;
-
+			
 			switch (id) {
 			case 0:
 				break;
 
-			case 1: //le plus pres (-1)			
-				arbre[j].modifier_branche(arbre[j - 1].v1, arbre[j - 1].v1, a, 1);
+			case 1:
+				arbre[j].modifier_branche(arbre[j - ecart_avec_tronc].v1, arbre[j - ecart_avec_tronc].v2, -a, s);
+				ecart_avec_tronc++;
+				//ofLog() << "v1 : " << arbre[j].v1;
+				//ofLog() << "v2 : " << arbre[j].v2;
+				//ofLog() << "angle : " << arbre[j].m_angle;
 				break;
 
 			case 2:
-				arbre[j].modifier_branche(arbre[j - 2].v1, arbre[j - 2].v1, a, 1);
+				arbre[j].modifier_branche(arbre[j - ecart_avec_tronc].v1, arbre[j - ecart_avec_tronc].v2, -a/2, s);
+				ecart_avec_tronc++;
 				break;
 
 			case 3:
-				arbre[j].modifier_branche(arbre[j - 3].v1, arbre[j - 3].v1, a, 1);
+				arbre[j].modifier_branche(arbre[j - ecart_avec_tronc].v1, arbre[j - ecart_avec_tronc].v2, a/2, s);
+				ecart_avec_tronc++;
 				break;
 
-			case 4: //le plus loin du tronc (-4)
-				arbre[j].modifier_branche(arbre[j - 4].v1, arbre[j - 4].v1, a, 1);
+			case 4:
+				arbre[j].modifier_branche(arbre[j - ecart_avec_tronc].v1, arbre[j - ecart_avec_tronc].v2, a, s);
 				break;
 
 			default:
@@ -156,28 +148,32 @@ void Renderer::update() {
 	s = floatSlider2.getParameter().cast<float>();
 	if (s != s_previous)
 	{
-		for (int j = arbre.size()-1; j >= 0; j--)
-		{
-			int id = arbre[j].m_id;
+		int ecart_avec_tronc = 1;
+		for (int j = 0; j < arbre.size(); j++)
+		{		
+			int id = arbre[j].m_id;	
 
 			switch (id) {
 			case 0:
 				break;
 
-			case 1: //le plus pres (-1)			
-				arbre[j].modifier_branche(arbre[j - 1].v1, arbre[j - 1].v1, 0, s);
+			case 1:
+				arbre[j].modifier_branche(arbre[j - ecart_avec_tronc].v1, arbre[j - ecart_avec_tronc].v2, arbre[j].m_angle, s);
+				ecart_avec_tronc++;
 				break;
 
 			case 2:
-				arbre[j].modifier_branche(arbre[j - 2].v1, arbre[j - 2].v1, 0, s);
+				arbre[j].modifier_branche(arbre[j - ecart_avec_tronc].v1, arbre[j - ecart_avec_tronc].v2, arbre[j].m_angle, s);
+				ecart_avec_tronc++;
 				break;
 
 			case 3:
-				arbre[j].modifier_branche(arbre[j - 3].v1, arbre[j - 3].v1, 0, s);
+				arbre[j].modifier_branche(arbre[j - ecart_avec_tronc].v1, arbre[j - ecart_avec_tronc].v2, arbre[j].m_angle, s);
+				ecart_avec_tronc++;
 				break;
 
-			case 4: //le plus loin du tronc (-4)
-				arbre[j].modifier_branche(arbre[j - 4].v1, arbre[j - 4].v1, 0, s);
+			case 4:
+				arbre[j].modifier_branche(arbre[j - ecart_avec_tronc].v1, arbre[j - ecart_avec_tronc].v2, arbre[j].m_angle, s);
 				break;
 
 			default:
@@ -198,13 +194,5 @@ void Renderer::draw() {
 	for (int j = arbre.size()-1; j >= 0; j--)
 	{		
 		arbre[j].showLine();
-		
-		//it->showellipse();
 	}
-
-	//voir les feuilles
-	//for (it = feuilles.begin(); it != feuilles.end(); it++)
-	//{
-	//	it->showellipse();
-	//}
 }

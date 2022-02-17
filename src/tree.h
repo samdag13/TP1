@@ -6,10 +6,11 @@ class Tree
 {
 public:
 	//constructeur
-	Tree(ofVec4f vi, ofVec4f vf, int id);
+	Tree(ofVec4f vi, ofVec4f vf, float angle, int id);
 
 	//id pour savoir quelle branche on a
 	int m_id;
+	float m_angle;
 
 	//pour avoir acces à vi et vf en tout temps
 	ofVec4f v1;
@@ -24,13 +25,10 @@ public:
 
 	//pour les résultats intermédiaire (apres les mutliplications avec les matrices de scale et rotation/translation
 	ofVec4f v3;
-	ofVec4f v4;
 	
 	//matrice de transformations
-	ofMatrix4x4 mr;
-	ofMatrix4x4 ms;
+	ofMatrix4x4 m;
 	
-
 	//savoir si la branche a déjà été créé pour ne pas la créer plusieurs fois (optimisation)
 	bool finished = false;
 
