@@ -21,6 +21,8 @@ public:
 	ofParameter<float> a = PI / 4;
 	float s_previous;
 	ofParameter<float> s = 0.5;
+	float e_previous;
+	ofParameter<float> e = 2;
 
 	//compter le nombre d'étages
 	int count;
@@ -53,11 +55,12 @@ public:
 	//interface
 	ofxPanel gui;
 
+	ofxIntSlider intSlider;
+	ofxFloatSlider floatSlider1;
+	ofxFloatSlider floatSlider2;
+	ofxFloatSlider floatSlider3;
 	ofxToggle togglestatic;
 	ofxToggle toggledynamic;
-	ofxIntSlider intSlider;
-	ofxFloatSlider floatSlider2;
-	ofxFloatSlider floatSlider1;
 	ofxVec3Slider vec3Slider;
 };
 

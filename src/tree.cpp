@@ -1,6 +1,6 @@
 #include "tree.h"
 
-Tree::Tree(ofVec4f vi, ofVec4f vf, float angle, int id, ofVec3f vcolor) {
+Tree::Tree(ofVec4f vi, ofVec4f vf, float angle, int id, ofVec3f vcolor, float linewidth) {
 
 	//id
 	m_id = id;
@@ -14,7 +14,7 @@ Tree::Tree(ofVec4f vi, ofVec4f vf, float angle, int id, ofVec3f vcolor) {
 	m_vcolor.x = vcolor.x;
 	m_vcolor.y = vcolor.y;
 	m_vcolor.z = vcolor.z;
-	m_linewidth = 2;
+	m_linewidth = linewidth;
 }
 
 void Tree::modifier_branche(ofVec4f vi, ofVec4f vf, float angle, float scale) {
@@ -46,6 +46,10 @@ void Tree::modifier_couleur(ofVec3f vcolor)
 	m_vcolor = vcolor;
 }
 
+void Tree::modifier_epaisseur(float linewidth) {
+	m_linewidth = linewidth;
+}
+
 void Tree::dynamic_random_color() {
 	unsigned int r = rand() % 256;
 	unsigned g = rand() % 256;
@@ -61,7 +65,7 @@ void Tree::static_random_color() {
 	m_vcolor.z = B;
 }
 
-Tree Tree::branche(float angle, float scale, int id, ofVec3f vcolor) {
+Tree Tree::branche(float angle, float scale, int id, ofVec3f vcolor, float linewidth) {
 
 	//matrice de rotation et de translation
 	m.set(
@@ -79,7 +83,7 @@ Tree Tree::branche(float angle, float scale, int id, ofVec3f vcolor) {
 	v3 = v * m;
 
 	//création d'une nouvelle branche avec les nouvelles données
-	Tree branche(v2, v3, angle, id, vcolor);
+	Tree branche(v2, v3, angle, id, vcolor, linewidth);
 
 	return branche;
 }
