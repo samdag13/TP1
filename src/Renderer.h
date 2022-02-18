@@ -13,8 +13,10 @@ public:
 	int depart_y;
 	int longueurLigne;
 
+	ofVec3f v_previous;
+	ofParameter<ofVec3f> v;  
 	int p_previous;
-	ofParameter<int> p = 1;
+	ofParameter<int> p = 0;
 	float a_previous;
 	ofParameter<float> a = PI / 4;
 	float s_previous;
@@ -51,8 +53,11 @@ public:
 	//interface
 	ofxPanel gui;
 
+	ofxToggle togglestatic;
+	ofxToggle toggledynamic;
 	ofxIntSlider intSlider;
 	ofxFloatSlider floatSlider2;
 	ofxFloatSlider floatSlider1;
+	ofxVec3Slider vec3Slider;
 };
 

@@ -6,11 +6,12 @@ class Tree
 {
 public:
 	//constructeur
-	Tree(ofVec4f vi, ofVec4f vf, float angle, int id);
+	Tree(ofVec4f vi, ofVec4f vf, float angle, int id, ofVec3f vcolor);
 
 	//id pour savoir quelle branche on a
 	int m_id;
 	float m_angle;
+	float m_linewidth;
 
 	//pour avoir acces à vi et vf en tout temps
 	ofVec4f v1;
@@ -33,9 +34,12 @@ public:
 	bool finished = false;
 
 	//pour avoir des couleurs random
-	int R1 = rand() % 256;
-	int R2 = rand() % 256;
-	int R3 = rand() % 256;
+	unsigned int R = rand() % 256;
+	unsigned int G = rand() % 256;
+	unsigned int B = rand() % 256;
+
+	//vecteur contenant la couleur de la branche
+	ofVec3f m_vcolor;
 
 	void showLine();
 
@@ -44,7 +48,13 @@ public:
 
 	void modifier_branche(ofVec4f vi, ofVec4f vf, float angle, float scale);
 
-	Tree branche(float angle, float scale, int id);
+	void modifier_couleur(ofVec3f vcolor);
+
+	void dynamic_random_color();
+
+	void static_random_color();
+
+	Tree branche(float angle, float scale, int id, ofVec3f vcolor);
 
 	~Tree();
 
