@@ -62,5 +62,13 @@ public:
 	ofxToggle togglestatic;
 	ofxToggle toggledynamic;
 	ofxVec3Slider vec3Slider;
+
+	//toggles pages
+	ofxGuiGroup togglegroup;
+	ofxToggle toggle1;
+	ofxToggle toggle2;
+	ofxToggle toggle3;
+	ofxButton bouton4;
+	ofxButton bouton5;
 };
 
