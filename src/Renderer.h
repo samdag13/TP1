@@ -46,12 +46,6 @@ public:
 	//itérateur pour parcourir une liste Tree
 	std::vector<Tree>::iterator it;
 
-	void setup();
-
-	void update();
-
-	void draw();
-
 	//interface
 	ofxPanel gui;
 
@@ -70,5 +64,21 @@ public:
 	ofxToggle toggle3;
 	ofxButton bouton4;
 	ofxButton bouton5;
+
+
+	void setup();
+	void update();
+	void draw();
+
+private:
+	void GUIMenusSetup();
+	void modeDessin2D();
+	void modeArbreFractal();
+	void updateProfondeurArbre();
+	void updateAngleArbre();
+	void updateScaleArbre();
+	void updateEpaisseurArbre();
+	void updateCouleurArbre();
+	void updateGUIParameters();
 };
 
