@@ -4,7 +4,7 @@ void Renderer::setup() {
 
 
 	ofBackground(50);
-	ofSetFrameRate(60);
+	ofSetFrameRate(90);
 
 	GUIMenusSetup();
 
@@ -22,26 +22,56 @@ void Renderer::update() {
 
 	updateGUIParameters();
 
-	//bouton 1 (Dessin vectoriel)
+	p = mode_permission.size() - 1;
+	if ((toggle1 || toggle2 || toggle3) && p>0) {
+
+
+		switch (mode_permission[p])
+		{
+		case 1:
+			toggle2 = toggle3 = false;
+			mode_permission.pop_back();
+			break;
+
+		case 2:
+			toggle1 = toggle3 = false;
+			mode_permission.pop_back();
+			break;
+
+		case 3:
+			toggle2 = toggle1 = false;
+			mode_permission.pop_back();
+			break;
+
+		default:
+			break;
+		}
+	}
+
+
+	//(Dessin vectoriel)
 	if (toggle1)
 	{
+		mode_permission.push_back(1);
 		modeDessin2D();
 	}
 
-	//bouton 2 (arbre fractal)	
-	else if (toggle2)
+	//(arbre fractal)	
+	if (toggle2)
 	{
+		mode_permission.push_back(2);
 		modeArbreFractal();
 	}
 
-	//bouton 1 (Modele 3D)
-	else if (toggle3)
-	{
 
+	//(Modele 3D)
+	if (toggle3)
+	{
+		mode_permission.push_back(3);
 	}
 
-	//bouton 1 (Screenshot)
-	else if (bouton4)
+	//(Screenshot)
+	if (bouton4)
 	{
 
 
@@ -56,14 +86,18 @@ void Renderer::update() {
 		// capturer le contenu du framebuffer actif
 		image.grabScreen(0, 0, ofGetWindowWidth(), ofGetWindowHeight());
 
-		// sauvegarder le fichier image
+		//sauvegarder le fichier image
 		image.save(file_name);
 
 		ofLog() << "<export image: " << file_name << ">";
+
+		//Limite à une capture par seconde quand le bouton reste enfoncé.
+		Sleep(1000);
+
 	}
 
 	//bouton 1 (Importer image)
-	else if (bouton5)
+	if (bouton5)
 	{
 
 	}
@@ -109,7 +143,7 @@ void Renderer::GUIMenusSetup() {
 
 	gui.add(vec3Slider.setup("RGB Color", ofVec3f(255, 255, 255), ofVec3f(0, 0, 0), ofVec3f(255, 255, 255)));
 
-	//togglegroup.setup("Switch pages");
+	togglegroup.setup("Switch pages");
 	gui.add(toggle1.setup("Dessin vectoriel", false));
 	gui.add(toggle2.setup("Arbre fractal", false));
 	gui.add(toggle3.setup("Modele 3D", false));
@@ -301,4 +335,5 @@ void Renderer::updateGUIParameters() {
 
 	v_previous = v;
 	v = vec3Slider.getParameter().cast<ofVec3f>();
+
 }

@@ -24,8 +24,13 @@ public:
 	float e_previous;
 	ofParameter<float> e = 2;
 
+	bool dessin2D = false;
+	bool modele3D = false;
+	bool arbreFract = false;
+
 	//compter le nombre d'étages
 	int count;
+	int toggleCount=0;
 
 	//angles
 	float angle1 = -PI / 4;
@@ -37,6 +42,8 @@ public:
 	ofVec4f v1;
 	ofVec4f v2;
 	
+	std::vector<int> mode_permission;
+
 	//liste de tous les branches en objets
 	std::vector<Tree> arbre;
 
@@ -80,5 +87,6 @@ private:
 	void updateEpaisseurArbre();
 	void updateCouleurArbre();
 	void updateGUIParameters();
+	void manageModeToggle();
 };
 
