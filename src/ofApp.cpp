@@ -15,7 +15,6 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 	renderer.draw();
-	
 }
 
 //--------------------------------------------------------------
@@ -25,6 +24,34 @@ void ofApp::keyPressed(int key){
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
+	switch (key)
+	{
+	case '1':
+		renderer.mode = 1;
+		renderer.current_mode = "Dessin 2D";
+		renderer.update();
+		break;
+
+	case '2':
+		renderer.mode = 2;
+		renderer.current_mode = "Arbre fractal";
+		renderer.update();
+		break;
+
+	case '3':
+		renderer.mode = 3;
+		renderer.current_mode = "Modele 3D";
+		renderer.update();
+		break;
+
+	case 's':
+		renderer.image_export();
+		break;
+
+	case 'i':
+		renderer.image_import();
+		break;
+	}
 
 }
 

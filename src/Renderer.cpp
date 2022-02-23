@@ -1,12 +1,166 @@
 #include "Renderer.h"
 
 void Renderer::setup() {
-
-
 	ofBackground(50);
 	ofSetFrameRate(90);
 
-	GUIMenusSetup();
+	GUISetup();
+	GUI1Setup();
+	GUI2Setup();
+	GUI3Setup();
+}
+
+void Renderer::update() {
+
+	switch (mode)
+	{
+	case 1:
+		updateGUI1Parameters();
+		modeDessin2D();
+		break;
+
+	case 2:
+		updateGUI2Parameters();
+		modeArbreFractal();
+		break;
+
+	case 3:
+		updateGUI3Parameters();
+		modeModele3D();
+		break;
+
+	default:
+		break;
+	}
+}
+
+void Renderer::draw() {
+	if (mode == 0)	
+		gui.draw();
+	
+	else if (mode == 1)
+	{
+		gui1.draw();
+	}
+		
+	else if (mode == 2)
+	{
+		gui2.draw();
+	}
+		
+	else if (mode == 3)
+	{
+		gui3.draw();
+	}
+
+
+
+	switch (mode)
+	{
+	//dessin 2D
+	case 1:
+
+		break;
+
+	//arbre fractal
+	case 2:
+		//déplacer le centre ;
+		ofTranslate(depart_x, depart_y);
+
+		for (int j = arbre.size() - 1; j >= 0; j--)
+		{
+			arbre[j].showLine();
+		}
+		break;
+
+	//modele 3D
+	case 3:
+
+		break;
+
+	default:
+		break;
+	}
+}
+
+void Renderer::image_export()
+{
+	ofImage image;
+
+	// extraire des données temporelles formatées
+	string time_stamp = ofGetTimestampString("-%y%m%d-%H%M%S-%i");
+
+	// générer un nom de fichier unique et ordonné
+	string file_name = "Capture" + time_stamp + ".png";
+
+	// capturer le contenu du framebuffer actif
+	image.grabScreen(0, 0, ofGetWindowWidth(), ofGetWindowHeight());
+
+	//sauvegarder le fichier image
+	image.save(file_name);
+
+	ofLog() << "<export image: " << file_name << ">";
+
+}
+
+void Renderer::image_import()
+{
+
+}
+
+
+//menus
+void Renderer::GUISetup() {
+	gui.setup();
+	gui.setDefaultHeight(20);
+	gui.setDefaultWidth(250);
+	gui.setSize(250, 400);
+
+	gui.add(cmode.setup("Current mode ", "None"));
+	gui.add(dessin2d.setup("1 ", "Dessin 2D"));
+	gui.add(arbrefractal.setup("2 ", "Arbre fractal"));
+	gui.add(modele3d.setup("3 ", "Modele 3D"));
+	gui.add(imageexport.setup("S ", "Screenshot"));
+	gui.add(imageimport.setup("I ", "Importer une image"));
+}
+
+void Renderer::GUI1Setup() {
+	gui1.setup();
+	gui1.setDefaultHeight(20);
+	gui1.setDefaultWidth(250);
+	gui1.setSize(250, 400);
+
+	gui1.add(cmode_1.setup("Current mode ", "None"));
+	gui1.add(dessin2d_1.setup("1 ", "Dessin 2D"));
+	gui1.add(arbrefractal_1.setup("2 ", "Arbre fractal"));
+	gui1.add(modele3d_1.setup("3 ", "Modele 3D"));
+	gui1.add(imageexport_1.setup("S ", "Screenshot"));
+	gui1.add(imageimport_1.setup("I ", "Importer une image"));
+}
+
+void Renderer::GUI2Setup() {
+	gui2.setup();
+	gui2.setDefaultHeight(20);
+	gui2.setDefaultWidth(250);
+	gui2.setSize(250, 400);
+
+	gui2.add(cmode_2.setup("Current mode ", "None"));
+	gui2.add(dessin2d_2.setup("1 ", "Dessin 2D"));
+	gui2.add(arbrefractal_2.setup("2 ", "Arbre fractal"));
+	gui2.add(modele3d_2.setup("3 ", "Modele 3D"));
+	gui2.add(imageexport_2.setup("S ", "Screenshot"));
+	gui2.add(imageimport_2.setup("I ", "Importer une image"));
+
+	gui2.add(intSlider.setup("Nombre d'etages", 0, 0, 7));
+	gui2.add(floatSlider1.setup("Angle", PI / 4, 0.0, 2 * PI));
+	gui2.add(floatSlider2.setup("Scale", 0.5, 0.0, 2));
+	gui2.add(floatSlider3.setup("Epaisseur", 2, 0.0, 5));
+
+	gui2.add(togglestatic.setup("Static random colors", false));
+	gui2.add(toggledynamic.setup("Dynamic random colors", false));
+
+	gui2.add(vec3Slider.setup("RGB Color", ofVec3f(255, 255, 255), ofVec3f(0, 0, 0), ofVec3f(255, 255, 255)));
+
 
 	depart_x = ofGetWindowWidth() / 2;
 	depart_y = ofGetWindowHeight();
@@ -15,146 +169,59 @@ void Renderer::setup() {
 
 	v1.set(0, 0, 1, 1);
 	v2.set(0, -longueurLigne, 1, 1);
-	v.set(vec3Slider.getParameter().cast<ofVec3f>());	
+	v.set(vec3Slider.getParameter().cast<ofVec3f>());
 }
 
-void Renderer::update() {
+void Renderer::GUI3Setup() {
+	gui3.setup();
+	gui3.setDefaultHeight(20);
+	gui3.setDefaultWidth(250);
+	gui3.setSize(250, 400);
 
-	updateGUIParameters();
-
-	p = mode_permission.size() - 1;
-	if ((toggle1 || toggle2 || toggle3) && p>0) {
-
-
-		switch (mode_permission[p])
-		{
-		case 1:
-			toggle2 = toggle3 = false;
-			mode_permission.pop_back();
-			break;
-
-		case 2:
-			toggle1 = toggle3 = false;
-			mode_permission.pop_back();
-			break;
-
-		case 3:
-			toggle2 = toggle1 = false;
-			mode_permission.pop_back();
-			break;
-
-		default:
-			break;
-		}
-	}
-
-
-	//(Dessin vectoriel)
-	if (toggle1)
-	{
-		mode_permission.push_back(1);
-		modeDessin2D();
-	}
-
-	//(arbre fractal)	
-	if (toggle2)
-	{
-		mode_permission.push_back(2);
-		modeArbreFractal();
-	}
-
-
-	//(Modele 3D)
-	if (toggle3)
-	{
-		mode_permission.push_back(3);
-	}
-
-	//(Screenshot)
-	if (bouton4)
-	{
-
-
-		ofImage image;
-
-		// extraire des données temporelles formatées
-		string time_stamp = ofGetTimestampString("-%y%m%d-%H%M%S-%i");
-
-		// générer un nom de fichier unique et ordonné
-		string file_name = "Capture" + time_stamp + ".png";
-
-		// capturer le contenu du framebuffer actif
-		image.grabScreen(0, 0, ofGetWindowWidth(), ofGetWindowHeight());
-
-		//sauvegarder le fichier image
-		image.save(file_name);
-
-		ofLog() << "<export image: " << file_name << ">";
-
-		//Limite à une capture par seconde quand le bouton reste enfoncé.
-		Sleep(1000);
-
-	}
-
-	//bouton 1 (Importer image)
-	if (bouton5)
-	{
-
-	}
-}
-
-void Renderer::draw() {
-	gui.draw();
-
-	//déplacer le centre ;
-	ofTranslate(depart_x, depart_y);
-
-	if(toggle2)
-	for (int j = arbre.size()-1; j >= 0; j--)
-	{		
-		arbre[j].showLine();
-	}
+	gui3.add(cmode_3.setup("Current mode ", "None"));
+	gui3.add(dessin2d_3.setup("1 ", "Dessin 2D"));
+	gui3.add(arbrefractal_3.setup("2 ", "Arbre fractal"));
+	gui3.add(modele3d_3.setup("3 ", "Modele 3D"));
+	gui3.add(imageexport_3.setup("S ", "Screenshot"));
+	gui3.add(imageimport_3.setup("I ", "Importer une image"));
 }
 
 
-void Renderer::modeDessin2D() {}
+//updates
+void Renderer::updateGUI1Parameters(){
+}
+
+void Renderer::updateGUI2Parameters() {
+	//convertir toutes les valeurs :
+	p_previous = p;
+	p = intSlider.getParameter().cast<int>();
+
+	a_previous = a;
+	a = floatSlider1.getParameter().cast<float>();
+
+	s_previous = s;
+	s = floatSlider2.getParameter().cast<float>();
+
+	e_previous = e;
+	e = floatSlider3.getParameter().cast<float>();
+
+	v_previous = v;
+	v = vec3Slider.getParameter().cast<ofVec3f>();
+
+	cmode.setup("Current mode ", current_mode);
+}
+
+void Renderer::updateGUI3Parameters() {
+
+}
+
+
+//modes
+void Renderer::modeDessin2D() {
+}
 
 void Renderer::modeArbreFractal() {
 
-	updateProfondeurArbre();
-	updateAngleArbre();
-	updateScaleArbre();
-	updateEpaisseurArbre();
-	updateCouleurArbre();
-
-
-}
-
-void Renderer::GUIMenusSetup() {
-	gui.setup();
-
-	gui.add(intSlider.setup("Nombre d'etages", 0, 0, 7));
-	gui.add(floatSlider1.setup("Angle", PI / 4, 0.0, 2 * PI));
-	gui.add(floatSlider2.setup("Scale", 0.5, 0.0, 2));
-	gui.add(floatSlider3.setup("Epaisseur", 2, 0.0, 5));
-
-	gui.add(togglestatic.setup("Static random colors", false));
-	gui.add(toggledynamic.setup("Dynamic random colors", false));
-
-	gui.add(vec3Slider.setup("RGB Color", ofVec3f(255, 255, 255), ofVec3f(0, 0, 0), ofVec3f(255, 255, 255)));
-
-	togglegroup.setup("Switch pages");
-	gui.add(toggle1.setup("Dessin vectoriel", false));
-	gui.add(toggle2.setup("Arbre fractal", false));
-	gui.add(toggle3.setup("Modele 3D", false));
-	gui.add(bouton4.setup("Screenshot"));
-	gui.add(bouton5.setup("Importer une image"));
-
-	//toggle group marche pas:(((((((
-	//gui.add(togglegroup.setup("Switch pages"));
-}
-
-void Renderer::updateProfondeurArbre() {
 	//couhes
 	if (p < p_previous)
 	{
@@ -208,9 +275,7 @@ void Renderer::updateProfondeurArbre() {
 					count++;
 				}
 		}
-}
 
-void Renderer::updateAngleArbre() {
 	//l'angle
 	if (a != a_previous)
 	{
@@ -248,16 +313,6 @@ void Renderer::updateAngleArbre() {
 			}
 		}
 	}
-}
-
-void Renderer::updateEpaisseurArbre() {
-	//epaisseur
-	if (e != e_previous)
-		for (int j = 0; j < arbre.size(); j++)
-			arbre[j].modifier_epaisseur(e);
-}
-
-void Renderer::updateScaleArbre() {
 
 	//scale
 	if (s != s_previous)
@@ -296,9 +351,12 @@ void Renderer::updateScaleArbre() {
 			}
 		}
 	}
-}
 
-void Renderer::updateCouleurArbre() {
+	//epaisseur
+	if (e != e_previous)
+		for (int j = 0; j < arbre.size(); j++)
+			arbre[j].modifier_epaisseur(e);
+
 
 	//couleur
 	if (v.get().x != v_previous.x || v.get().y != v_previous.y || v.get().z != v_previous.z)
@@ -317,23 +375,12 @@ void Renderer::updateCouleurArbre() {
 	else
 		for (int j = 0; j < arbre.size(); j++)
 			arbre[j].modifier_couleur(v);
-}
 
-void Renderer::updateGUIParameters() {
-	//convertir toutes les valeurs :
-	p_previous = p;
-	p = intSlider.getParameter().cast<int>();
-
-	a_previous = a;
-	a = floatSlider1.getParameter().cast<float>();
-
-	s_previous = s;
-	s = floatSlider2.getParameter().cast<float>();
-
-	e_previous = e;
-	e = floatSlider3.getParameter().cast<float>();
-
-	v_previous = v;
-	v = vec3Slider.getParameter().cast<ofVec3f>();
 
 }
+
+void Renderer::modeModele3D() {
+
+}
+
+
