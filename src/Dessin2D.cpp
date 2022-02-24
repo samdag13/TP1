@@ -56,8 +56,8 @@ void Dessin2D::draw() {
 				shapes[i].fill_b,
 				shapes[i].fill_a);
 			point(
-				shapes[i].x1,
-				shapes[i].y1,
+				shapes[i].x1 + (shapes[i].width/2.0f),
+				shapes[i].y1 + (shapes[i].height / 2.0f),
 				shapes[i].radius);
 
 			ofNoFill();
@@ -68,8 +68,8 @@ void Dessin2D::draw() {
 				shapes[i].stroke_b,
 				shapes[i].stroke_a);
 			point(
-				shapes[i].x1,
-				shapes[i].y1,
+				shapes[i].x1 + (shapes[i].width / 2.0f),
+				shapes[i].y1 + (shapes[i].height / 2.0f),
 				shapes[i].radius);
 			break;
 
@@ -190,6 +190,101 @@ void Dessin2D::draw_outline() const {
 
 	ofNoFill();
 	ofDrawRectRounded(x1, y1, w, h, 4.0f);
+
+	switch (shape_mode)
+	{
+	case Primitive2D::point:
+		ofFill();
+		ofSetLineWidth(0);
+		ofSetCircleResolution(100);
+		ofSetColor(fill_color);
+		point(
+			x1 + (w/2.0f),
+			y1 + (h / 2.0f),
+			sqrt(pow(h, 2) + pow(w, 2)) / 2.0f);
+
+		ofNoFill();
+		ofSetLineWidth(stroke_width);
+		ofSetColor(stroke_color);
+		point(
+			x1 + (w / 2.0f),
+			y1 + (h / 2.0f),
+			sqrt(pow(h, 2) + pow(w, 2)) / 2.0f);
+		break;
+
+	case Primitive2D::line:
+		ofNoFill();
+		ofSetLineWidth(stroke_width);
+		ofSetColor(stroke_color);
+		line(
+			x1,
+			y1,
+			x2,
+			y2);
+
+		break;
+
+	case Primitive2D::rectangle:
+		ofFill();
+		ofSetLineWidth(0);
+		ofSetColor(fill_color);
+		rectangle(
+			x1,
+			y1,
+			x2,
+			y2);
+		ofNoFill();
+		ofSetLineWidth(stroke_width);
+		ofSetColor(stroke_color);
+		rectangle(
+			x1,
+			y1,
+			x2,
+			y2);
+		break;
+
+	case Primitive2D::ellipse:
+		ofFill();
+		ofSetLineWidth(0);
+		ofSetCircleResolution(100);
+		ofSetColor(fill_color);
+		ellipse(
+			x1,
+			y1,
+			w,
+			h);
+		ofNoFill();
+		ofSetLineWidth(stroke_width);
+		ofSetColor(stroke_color);
+		ellipse(
+			x1,
+			y1,
+			w,
+			h);
+		break;
+
+	case Primitive2D::triangle:
+		ofFill();
+		ofSetLineWidth(0);
+		ofSetColor(fill_color);
+		triangle(
+			x1,
+			y1,
+			w,
+			h);
+		ofNoFill();
+		ofSetLineWidth(stroke_width);
+		ofSetColor(stroke_color);
+		triangle(
+			x1,
+			y1,
+			w,
+			h);
+
+		break;
+	default:
+		break;
+	}
 }
 
 void Dessin2D::draw_cursor() const {
