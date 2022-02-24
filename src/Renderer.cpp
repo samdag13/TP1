@@ -15,19 +15,16 @@ void Renderer::update() {
 	switch (mode)
 	{
 	case 1:
-		current_mode = "Dessin 2D";
 		updateGUI1Parameters();
 		modeDessin2D();
 		break;
 
 	case 2:
-		current_mode = "Arbre fractal";
 		updateGUI2Parameters();
 		modeArbreFractal();
 		break;
 
 	case 3:
-		current_mode = "Modele 3D";
 		updateGUI3Parameters();
 		modeModele3D();
 		break;
@@ -172,12 +169,12 @@ void Renderer::GUI1Setup() {
 	gui1.setSize(250, 400);
 
 	indications.setup("Indications");
-	indications.add(cmode_1.setup("Current mode ", to_string(mode)));
+	indications.add(cmode_1.setup("Current mode ", current_mode));
 	indications.add(dessin2d_1.setup("1 ", "Dessin 2D"));
 	indications.add(arbrefractal_1.setup("2 ", "Arbre fractal"));
 	indications.add(modele3d_1.setup("3 ", "Modele 3D"));
-	indications.add(imageexport_1.setup("S ", "Screenshot"));
-	indications.add(imageimport_1.setup("I ", "Importer une image"));
+	indications.add(imageexport_1.setup("u ", "Screenshot"));
+	indications.add(imageimport_1.setup("i ", "Importer une image"));
 	gui1.add(&indications);
 
 	stroke_color_2D.set("Couleur du trait", ofColor(120), ofColor(0, 0), ofColor(255, 255, 255));

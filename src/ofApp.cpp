@@ -140,6 +140,7 @@ void ofApp::keyReleased(int key){
 		renderer.current_mode = "Modele 3D";
 		renderer.update();
 		renderer.setup_camera();
+		break;
 
 	//images
 	case 'u':

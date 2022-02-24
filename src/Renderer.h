@@ -20,7 +20,6 @@ public:
 	Dessin2D paint;
 
 	//mode
-	//mode
 	int mode = 0;
 	string current_mode = "None";
 
@@ -82,7 +81,7 @@ public:
 	ofxLabel imageexport_1;
 	ofxLabel imageimport_1;
 
-		//input mode 1
+	//input mode 1
 	ofParameter<ofColor> stroke_color_2D;
 	ofParameter<ofColor> fill_color_2D;
 	ofParameter<float> stroke_width_2D;
@@ -101,7 +100,8 @@ public:
 	ofxLabel modele3d_2;
 	ofxLabel imageexport_2;
 	ofxLabel imageimport_2;
-		//input mode 2
+
+	//input mode 2
 	ofxIntSlider intSlider;
 	ofxFloatSlider floatSlider1;
 	ofxFloatSlider floatSlider2;
