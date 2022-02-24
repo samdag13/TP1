@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "Renderer.h"
+#include "Dessin2D.h"
 
 class ofApp : public ofBaseApp{
 

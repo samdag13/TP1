@@ -29,19 +29,16 @@ void ofApp::keyReleased(int key){
 	case '1':
 		renderer.mode = 1;
 		renderer.current_mode = "Dessin 2D";
-		renderer.update();
 		break;
 
 	case '2':
 		renderer.mode = 2;
 		renderer.current_mode = "Arbre fractal";
-		renderer.update();
 		break;
 
 	case '3':
 		renderer.mode = 3;
 		renderer.current_mode = "Modele 3D";
-		renderer.update();
 		break;
 
 	case 's':
@@ -58,31 +55,59 @@ void ofApp::keyReleased(int key){
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y ){
 
+	if (renderer.mode == 1) {
+		renderer.paint.mouse_current_x = x;
+		renderer.paint.mouse_current_y = y;
+	}
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){
-
+	if (renderer.mode == 1) {
+		renderer.paint.mouse_current_x = x;
+		renderer.paint.mouse_current_y = y;
+	}
 }
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
 
+	if (renderer.mode == 1) {
+		renderer.paint.mouse_press = true;
+		renderer.paint.mouse_press_x = x;
+		renderer.paint.mouse_press_y = y;
+		renderer.paint.mouse_current_x = x;
+		renderer.paint.mouse_current_y = y;
+	}
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseReleased(int x, int y, int button){
+void ofApp::mouseReleased(int x, int y, int button) {
+	if (renderer.mode == 1) {
+		renderer.paint.mouse_press = false;
+		renderer.paint.mouse_current_x = x;
+		renderer.paint.mouse_current_y = y;
 
+		renderer.paint.add_shape(renderer.paint.shape_mode);
+
+	}
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseEntered(int x, int y){
-
+	if (renderer.mode == 1) {
+		renderer.paint.mouse_current_x = x;
+		renderer.paint.mouse_current_y = y;
+	}
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseExited(int x, int y){
 
+	if (renderer.mode == 1) {
+		renderer.paint.mouse_current_x = x;
+		renderer.paint.mouse_current_y = y;
+	}
 }
 
 //--------------------------------------------------------------

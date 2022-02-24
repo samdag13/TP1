@@ -40,7 +40,9 @@ void Renderer::draw() {
 	
 	else if (mode == 1)
 	{
+		paint.draw();
 		gui1.draw();
+		prim_choice.draw();
 	}
 		
 	else if (mode == 2)
@@ -122,29 +124,58 @@ void Renderer::GUISetup() {
 	gui.add(modele3d.setup("3 ", "Modele 3D"));
 	gui.add(imageexport.setup("S ", "Screenshot"));
 	gui.add(imageimport.setup("I ", "Importer une image"));
+
 }
 
+//Dessin2D
 void Renderer::GUI1Setup() {
-	gui1.setup();
+	gui1.setup("Proprietes");
 	gui1.setDefaultHeight(20);
 	gui1.setDefaultWidth(250);
 	gui1.setSize(250, 400);
 
-	gui1.add(cmode_1.setup("Current mode ", "None"));
-	gui1.add(dessin2d_1.setup("1 ", "Dessin 2D"));
-	gui1.add(arbrefractal_1.setup("2 ", "Arbre fractal"));
-	gui1.add(modele3d_1.setup("3 ", "Modele 3D"));
-	gui1.add(imageexport_1.setup("S ", "Screenshot"));
-	gui1.add(imageimport_1.setup("I ", "Importer une image"));
+	indications.setup("Indications");
+	indications.add(cmode_1.setup("Current mode ", to_string(mode)));
+	indications.add(dessin2d_1.setup("1 ", "Dessin 2D"));
+	indications.add(arbrefractal_1.setup("2 ", "Arbre fractal"));
+	indications.add(modele3d_1.setup("3 ", "Modele 3D"));
+	indications.add(imageexport_1.setup("S ", "Screenshot"));
+	indications.add(imageimport_1.setup("I ", "Importer une image"));
+	gui1.add(&indications);
+
+	stroke_color_2D.set("Couleur du trait", ofColor(120), ofColor(0, 0), ofColor(255, 255, 255));
+	fill_color_2D.set("Couleur de remplissage", ofColor(255), ofColor(0, 0), ofColor(255, 255, 255));
+	stroke_width_2D.set("Epaisseur du trait", 5.0f, 0.0f, 10.0f);
+
+	gui1.add(stroke_color_2D);
+	gui1.add(fill_color_2D);
+	gui1.add(stroke_width_2D);
+
+	prim_choice.setup("Choix de primitive");
+	prim_choice.setPosition(ofGetWidth() - 260, 10);
+	b_line.setup("Ligne");
+	b_ell.setup("Ellipse");
+	b_tri.setup("Triangle");
+	b_point.setup("Cercle");
+	b_rect.setup("Rectangle");
+
+	prim_choice.add(&b_line);
+	prim_choice.add(&b_ell);
+	prim_choice.add(&b_rect);
+	prim_choice.add(&b_point);
+	prim_choice.add(&b_tri);
+
 }
 
+//Arbre Fractal
 void Renderer::GUI2Setup() {
 	gui2.setup();
 	gui2.setDefaultHeight(20);
 	gui2.setDefaultWidth(250);
 	gui2.setSize(250, 400);
 
-	gui2.add(cmode_2.setup("Current mode ", "None"));
+
+	gui2.add(cmode_2.setup("Current mode ", to_string(mode)));
 	gui2.add(dessin2d_2.setup("1 ", "Dessin 2D"));
 	gui2.add(arbrefractal_2.setup("2 ", "Arbre fractal"));
 	gui2.add(modele3d_2.setup("3 ", "Modele 3D"));
@@ -172,13 +203,14 @@ void Renderer::GUI2Setup() {
 	v.set(vec3Slider.getParameter().cast<ofVec3f>());
 }
 
+//Modele 3D
 void Renderer::GUI3Setup() {
 	gui3.setup();
 	gui3.setDefaultHeight(20);
 	gui3.setDefaultWidth(250);
 	gui3.setSize(250, 400);
 
-	gui3.add(cmode_3.setup("Current mode ", "None"));
+	gui3.add(cmode_3.setup("Current mode ", to_string(mode)));
 	gui3.add(dessin2d_3.setup("1 ", "Dessin 2D"));
 	gui3.add(arbrefractal_3.setup("2 ", "Arbre fractal"));
 	gui3.add(modele3d_3.setup("3 ", "Modele 3D"));
@@ -189,6 +221,16 @@ void Renderer::GUI3Setup() {
 
 //updates
 void Renderer::updateGUI1Parameters(){
+	paint.fill_color = fill_color_2D;
+	paint.stroke_color = stroke_color_2D;
+	paint.stroke_width = stroke_width_2D;
+	
+	if (b_line) paint.shape_mode = Primitive2D::line;
+	if (b_point) paint.shape_mode = Primitive2D::point;
+	if (b_ell) paint.shape_mode = Primitive2D::ellipse;
+	if (b_rect) paint.shape_mode = Primitive2D::rectangle;
+	if (b_tri) paint.shape_mode = Primitive2D::triangle;
+
 }
 
 void Renderer::updateGUI2Parameters() {
