@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "tree.h"
+#include "Dessin2D.h"
 #include "ofxGui.h"
 #include "ofxAssimpModelLoader.h"
 
@@ -16,6 +17,9 @@ public:
 
 	int longueurLigne;
 
+	Dessin2D paint;
+
+	//mode
 	//mode
 	int mode = 0;
 	string current_mode = "None";
@@ -57,8 +61,10 @@ public:
 	//interface
 	ofxPanel gui;
 	ofxPanel gui1;
+	ofxPanel prim_choice;
 	ofxPanel gui2;
 	ofxPanel gui3;
+	ofxGuiGroup indications;
 
 	//indications pour mode 0
 	ofxLabel cmode;
@@ -76,6 +82,18 @@ public:
 	ofxLabel imageexport_1;
 	ofxLabel imageimport_1;
 
+		//input mode 1
+	ofParameter<ofColor> stroke_color_2D;
+	ofParameter<ofColor> fill_color_2D;
+	ofParameter<float> stroke_width_2D;
+
+	ofxButton b_line;
+	ofxButton b_point;
+	ofxButton b_ell;
+	ofxButton b_rect;
+	ofxButton b_tri;
+
+
 	//indications pour mode 2
 	ofxLabel cmode_2;
 	ofxLabel dessin2d_2;
@@ -83,6 +101,7 @@ public:
 	ofxLabel modele3d_2;
 	ofxLabel imageexport_2;
 	ofxLabel imageimport_2;
+		//input mode 2
 	ofxIntSlider intSlider;
 	ofxFloatSlider floatSlider1;
 	ofxFloatSlider floatSlider2;
