@@ -9,6 +9,25 @@ class ofApp : public ofBaseApp{
 
 		Renderer renderer;
 
+		//camera mouvements
+		bool is_key_press_up;
+		bool is_key_press_down;
+		bool is_key_press_left;
+		bool is_key_press_right;
+
+		bool is_key_press_q;
+		bool is_key_press_w;
+		bool is_key_press_a;
+		bool is_key_press_s;
+		bool is_key_press_e;
+		bool is_key_press_r;
+		bool is_key_press_d;
+		bool is_key_press_f;
+		bool is_key_press_t;
+		bool is_key_press_y;
+		bool is_key_press_o;
+		bool is_key_press_p;
+
 		void setup();
 		void update();
 		void draw();

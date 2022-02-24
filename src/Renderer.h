@@ -3,17 +3,26 @@
 #include "ofMain.h"
 #include "tree.h"
 #include "ofxGui.h"
+#include "ofxAssimpModelLoader.h"
 
 class Renderer
 {
 public:
 	int depart_x;
 	int depart_y;
+
+	int center_x;
+	int center_y;
+
 	int longueurLigne;
 
 	//mode
 	int mode = 0;
-	std::string current_mode;
+	string current_mode = "None";
+
+	int modele = 1;
+
+	int camera_active = 0;
 
 	ofVec3f v_previous;
 	ofParameter<ofVec3f> v;  
@@ -25,6 +34,9 @@ public:
 	ofParameter<float> s = 0.5;
 	float e_previous;
 	ofParameter<float> e = 2;
+
+	int c_previous;
+	ofParameter<int> c = 0;
 
 	//compter le nombre d'étages
 	int count;
@@ -47,14 +59,6 @@ public:
 	ofxPanel gui1;
 	ofxPanel gui2;
 	ofxPanel gui3;
-
-	ofxIntSlider intSlider;
-	ofxFloatSlider floatSlider1;
-	ofxFloatSlider floatSlider2;
-	ofxFloatSlider floatSlider3;
-	ofxToggle togglestatic;
-	ofxToggle toggledynamic;
-	ofxVec3Slider vec3Slider;
 
 	//indications pour mode 0
 	ofxLabel cmode;
@@ -79,6 +83,13 @@ public:
 	ofxLabel modele3d_2;
 	ofxLabel imageexport_2;
 	ofxLabel imageimport_2;
+	ofxIntSlider intSlider;
+	ofxFloatSlider floatSlider1;
+	ofxFloatSlider floatSlider2;
+	ofxFloatSlider floatSlider3;
+	ofxToggle togglestatic;
+	ofxToggle toggledynamic;
+	ofxVec3Slider vec3Slider;
 
 	//indications pour mode 3
 	ofxLabel cmode_3;
@@ -88,9 +99,78 @@ public:
 	ofxLabel imageexport_3;
 	ofxLabel imageimport_3;
 
+	ofxAssimpModelLoader alien;
+	ofxAssimpModelLoader car;
+	ofxAssimpModelLoader piano;
+
+	ofxLabel l_alien;
+	ofxLabel l_car;
+	ofxLabel l_piano;
+
+	ofLight light;
+
+	//camera
+
+	ofxIntSlider camSlider;
+	ofCamera camera_front;
+	ofCamera camera_back;
+	ofCamera camera_left;
+	ofCamera camera_right;
+	ofCamera camera_top;
+	ofCamera camera_down;
+
+	ofCamera* camera;
+
+	ofQuaternion camera_orientation;
+
+	string camera_name;
+	string camera_projection;
+
+	ofVec3f camera_position;
+	ofVec3f camera_target;
+
+	float camera_near;
+	float camera_far;
+
+	float camera_fov;
+	float camera_fov_delta;
+
+	float offset_camera;
+	float offset_color;
+	float offset_scene;
+
+	float speed_delta;
+	float speed_translation;
+	float speed_rotation;
+
+	float time_current;
+	float time_last;
+	float time_elapsed;
+
+	bool is_camera_move_left;
+	bool is_camera_move_right;
+	bool is_camera_move_up;
+	bool is_camera_move_down;
+	bool is_camera_move_forward;
+	bool is_camera_move_backward;
+
+	bool is_camera_tilt_up;
+	bool is_camera_tilt_down;
+	bool is_camera_pan_left;
+	bool is_camera_pan_right;
+	bool is_camera_roll_left;
+	bool is_camera_roll_right;
+
+	bool is_camera_fov_narrow;
+	bool is_camera_fov_wide;
+
+	bool is_camera_perspective;
+
 	void setup();
 	void update();
 	void draw();
+
+	void setup_camera();
 
 	void modeDessin2D();
 	void modeArbreFractal();
