@@ -157,6 +157,7 @@ public:
 	float offset_camera;
 	float offset_color;
 	float offset_scene;
+	float offset_objet;
 
 	float speed_delta;
 	float speed_translation;
@@ -189,6 +190,7 @@ public:
 	void update();
 	void draw();
 
+	void reset();
 	void setup_camera();
 
 	void modeDessin2D();

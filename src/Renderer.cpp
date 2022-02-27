@@ -45,10 +45,10 @@ void Renderer::draw() {
 	else if (mode == 1)
 	{
 		paint.draw();
+		prim_choice.draw();
 		ofDisableDepthTest();
 		ofDisableLighting();
 		gui1.draw();
-		prim_choice.draw();
 	}
 		
 	else if (mode == 2)
@@ -98,24 +98,22 @@ void Renderer::draw() {
 		switch (modele)
 		{
 		case 1:
+			camera->begin();
 			alien.draw(OF_MESH_FILL);
+			camera->end();
 			break;
 		case 2:
+			camera->begin();
 			car.draw(OF_MESH_FILL);
+			camera->end();
 			break;
 		case 3:
+			camera->begin();
 			piano.draw(OF_MESH_FILL);
+			camera->end();
 			break;
 		}
-
-		// activer la caméra
-		camera->begin();
-
-		camera->end();
 		
-		break;
-
-	default:
 		break;
 	}
 }
@@ -167,7 +165,6 @@ void Renderer::GUI1Setup() {
 	gui1.setDefaultHeight(20);
 	gui1.setDefaultWidth(250);
 	gui1.setSize(250, 400);
-
 	indications.setup("Indications");
 	indications.add(cmode_1.setup("Current mode ", current_mode));
 	indications.add(dessin2d_1.setup("1 ", "Dessin 2D"));
@@ -280,6 +277,8 @@ void Renderer::GUI3Setup() {
 
 	speed_delta = 250.0f;
 
+	offset_objet = 64.0f;
+
 	is_camera_move_left = false;
 	is_camera_move_right = false;
 	is_camera_move_up = false;
@@ -299,6 +298,8 @@ void Renderer::GUI3Setup() {
 
 	is_camera_perspective = true;
 
+	reset();
+
 	setup_camera();
 }
 
@@ -314,6 +315,8 @@ void Renderer::updateGUI1Parameters(){
 	if (b_ell) paint.shape_mode = Primitive2D::ellipse;
 	if (b_rect) paint.shape_mode = Primitive2D::rectangle;
 	if (b_tri) paint.shape_mode = Primitive2D::triangle;
+
+	cmode_1.setup("Current mode ", current_mode);
 
 }
 
@@ -340,6 +343,13 @@ void Renderer::updateGUI2Parameters() {
 void Renderer::updateGUI3Parameters() {
 	c_previous = c;
 	c = camSlider.getParameter().cast<int>();
+
+	if (c != c_previous)
+	{
+		camera_active = c;
+		setup_camera();
+	}
+		
 
 	cmode_3.setup("Current mode ", current_mode);
 }
@@ -566,9 +576,6 @@ void Renderer::modeModele3D() {
 
 //camera
 void Renderer::setup_camera() {
-	if (c != c_previous)
-		camera_active = c;
-
 	switch (camera_active)
 	{
 	case 0:
@@ -579,6 +586,7 @@ void Renderer::setup_camera() {
 	case 1:
 		camera = &camera_back;
 		camera_name = "arrière";
+		ofLog() << camera;
 		break;
 
 	case 2:
@@ -627,4 +635,32 @@ void Renderer::setup_camera() {
 	ofLog() << "<setup camera: " << camera_name << ">";
 }
 
+void Renderer::reset()
+{
+	// initialisation des variables
+	offset_scene = offset_objet / 2.0f * -1.0f + offset_objet / 2.0f;
+	offset_color = 255.0f;
+	offset_camera = offset_scene * 3.5f * -1.0f;
+
+	// position initiale de chaque caméra
+	camera_front.setPosition(0, 0, -offset_camera);
+	camera_back.setPosition(0, 0, offset_camera);
+	camera_left.setPosition(-offset_camera, 0, 0);
+	camera_right.setPosition(offset_camera, 0, 0);
+	camera_top.setPosition(0, offset_camera, 0);
+	camera_down.setPosition(0, -offset_camera, 0);
+
+	// orientation de chaque caméra
+	camera_front.lookAt(camera_target);
+	camera_back.lookAt(camera_target);
+	camera_left.lookAt(camera_target);
+	camera_right.lookAt(camera_target);
+	camera_top.lookAt(camera_target, ofVec3f(1, 0, 0));
+	camera_down.lookAt(camera_target, ofVec3f(1, 0, 0));
+
+	// caméra par défaut
+	camera_active = 0;
+
+	ofLog() << "<reset>";
+}
 
