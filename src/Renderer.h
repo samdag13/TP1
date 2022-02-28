@@ -12,9 +12,6 @@ public:
 	int depart_x;
 	int depart_y;
 
-	int center_x;
-	int center_y;
-
 	int longueurLigne;
 
 	Dessin2D paint;
@@ -59,11 +56,10 @@ public:
 
 	//interface
 	ofxPanel gui;
-	ofxPanel gui1;
-	ofxPanel prim_choice;
+	ofxPanel gui1;	
 	ofxPanel gui2;
 	ofxPanel gui3;
-	ofxGuiGroup indications;
+	ofxPanel prim_choice;
 
 	//indications pour mode 0
 	ofxLabel cmode;
@@ -80,6 +76,7 @@ public:
 	ofxLabel modele3d_1;
 	ofxLabel imageexport_1;
 	ofxLabel imageimport_1;
+	ofxGuiGroup indications_1;
 
 	//input mode 1
 	ofParameter<ofColor> stroke_color_2D;
@@ -100,6 +97,8 @@ public:
 	ofxLabel modele3d_2;
 	ofxLabel imageexport_2;
 	ofxLabel imageimport_2;
+	ofxGuiGroup indications_2;
+	ofxGuiGroup parametres;
 
 	//input mode 2
 	ofxIntSlider intSlider;
@@ -117,6 +116,9 @@ public:
 	ofxLabel modele3d_3;
 	ofxLabel imageexport_3;
 	ofxLabel imageimport_3;
+	ofxGuiGroup indications_3;
+	ofxGuiGroup commandes_camera;
+	ofxGuiGroup types_objets;
 
 	ofxAssimpModelLoader alien;
 	ofxAssimpModelLoader car;
@@ -125,6 +127,13 @@ public:
 	ofxLabel l_alien;
 	ofxLabel l_car;
 	ofxLabel l_piano;
+
+	ofxLabel fleches;
+	ofxLabel qw;
+	ofxLabel as;
+	ofxLabel er;
+	ofxLabel df;
+	ofxLabel ty;
 
 	ofLight light;
 
