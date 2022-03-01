@@ -37,9 +37,6 @@ void Dessin2D::clear_shapes() {
 
 void Dessin2D::draw() {
 
-	draw_cursor();
-	if (mouse_press) draw_outline();
-
 	for (int i = 0; i < shapes.size(); i++) {
 
 
@@ -175,6 +172,9 @@ void Dessin2D::draw() {
 			break;
 		}
 	}
+
+	draw_cursor();
+	if (mouse_press) draw_outline();
 }
 
 void Dessin2D::draw_outline() const {

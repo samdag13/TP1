@@ -93,13 +93,22 @@ void Renderer::image_export()
 	string time_stamp = ofGetTimestampString("-%y%m%d-%H%M%S-%i");
 
 	// générer un nom de fichier unique et ordonné
-	string file_name = "Capture" + time_stamp + ".png";
+	string file_name = "Capture" + time_stamp;
 
 	// capturer le contenu du framebuffer actif
 	image.grabScreen(0, 0, ofGetWindowWidth(), ofGetWindowHeight());
 
+	ofFileDialogResult dir = ofSystemLoadDialog("Enregistrer dans...", true);
+
+	if (dir.bSuccess) {
+		ofLog() << dir.getPath();
+		string ext = ofSystemTextBoxDialog("Format fichier (jpg, png, ...)", "jpg");
+
+		file_name = dir.getPath() + "\\" + file_name + "." + ext;
+		image.save(file_name);
+	}
+
 	//sauvegarder le fichier image
-	image.save(file_name);
 
 	ofLog() << "<export image: " << file_name << ">";
 
@@ -230,6 +239,7 @@ void Renderer::updateGUI1Parameters(){
 	if (b_ell) paint.shape_mode = Primitive2D::ellipse;
 	if (b_rect) paint.shape_mode = Primitive2D::rectangle;
 	if (b_tri) paint.shape_mode = Primitive2D::triangle;
+
 
 }
 

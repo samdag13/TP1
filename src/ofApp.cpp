@@ -90,6 +90,10 @@ void ofApp::mouseReleased(int x, int y, int button) {
 
 		renderer.paint.add_shape(renderer.paint.shape_mode);
 
+		/*
+		ofFileDialogResult result = ofSystemLoadDialog("Choisissez une image");
+		if (result.bSuccess) { ofLog() << result.filePath; }
+		*/
 	}
 }
 
