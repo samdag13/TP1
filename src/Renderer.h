@@ -24,8 +24,8 @@ public:
 
 	int camera_active = 0;
 
-	ofVec3f v_previous;
-	ofParameter<ofVec3f> v;  
+	ofColor v_previous;
+	ofColor v;  
 	int p_previous;
 	ofParameter<int> p = 0;
 	float a_previous;
@@ -107,7 +107,7 @@ public:
 	ofxFloatSlider floatSlider3;
 	ofxToggle togglestatic;
 	ofxToggle toggledynamic;
-	ofxVec3Slider vec3Slider;
+	ofParameter<ofColor> treeColor;
 
 	//indications pour mode 3
 	ofxLabel cmode_3;

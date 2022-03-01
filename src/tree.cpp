@@ -1,6 +1,6 @@
 #include "tree.h"
 
-Tree::Tree(ofVec4f vi, ofVec4f vf, float angle, int id, ofVec3f vcolor, float linewidth) {
+Tree::Tree(ofVec4f vi, ofVec4f vf, float angle, int id, ofColor vcolor, float linewidth) {
 
 	//id
 	m_id = id;
@@ -11,9 +11,10 @@ Tree::Tree(ofVec4f vi, ofVec4f vf, float angle, int id, ofVec3f vcolor, float li
 	v2 = vf;
 	v0011.set(0, 0, 1, 1);
 
-	m_vcolor.x = vcolor.x;
-	m_vcolor.y = vcolor.y;
-	m_vcolor.z = vcolor.z;
+	m_vcolor.r = vcolor.r;
+	m_vcolor.g = vcolor.g;
+	m_vcolor.b = vcolor.b;
+	m_vcolor.a = vcolor.a;
 	m_linewidth = linewidth;
 }
 
@@ -41,7 +42,7 @@ void Tree::modifier_branche(ofVec4f vi, ofVec4f vf, float angle, float scale) {
 	v2 = v3;
 }
 
-void Tree::modifier_couleur(ofVec3f vcolor)
+void Tree::modifier_couleur(ofColor vcolor)
 {
 	m_vcolor = vcolor;
 }
@@ -52,20 +53,22 @@ void Tree::modifier_epaisseur(float linewidth) {
 
 void Tree::dynamic_random_color() {
 	unsigned int r = rand() % 256;
-	unsigned g = rand() % 256;
-	unsigned b = rand() % 256;
-	m_vcolor.x = r;
-	m_vcolor.y = g;
-	m_vcolor.z = b;
+	unsigned int g = rand() % 256;
+	unsigned int b = rand() % 256;
+	m_vcolor.r = r;
+	m_vcolor.g = g;
+	m_vcolor.b = b;
+	m_vcolor.a = 255;
 }
 
 void Tree::static_random_color() {
-	m_vcolor.x = R;
-	m_vcolor.y = G;
-	m_vcolor.z = B;
+	m_vcolor.r = R;
+	m_vcolor.g = G;
+	m_vcolor.b = B;
+	m_vcolor.a = 255;
 }
 
-Tree Tree::branche(float angle, float scale, int id, ofVec3f vcolor, float linewidth) {
+Tree Tree::branche(float angle, float scale, int id, ofColor vcolor, float linewidth) {
 
 	//matrice de rotation et de translation
 	m.set(
@@ -91,7 +94,7 @@ Tree Tree::branche(float angle, float scale, int id, ofVec3f vcolor, float linew
 void Tree::showLine() {
 	ofFill();
 	ofSetLineWidth(m_linewidth);
-	ofSetColor(m_vcolor.x, m_vcolor.y, m_vcolor.z);
+	ofSetColor(m_vcolor.r, m_vcolor.g, m_vcolor.b, m_vcolor.a);
 	vi2 = v1;
 	vf2 = v2;
 	ofDrawLine(vi2, vf2);

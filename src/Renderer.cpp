@@ -226,8 +226,8 @@ void Renderer::GUI2Setup() {
 	parametres.add(toggledynamic.setup("Dynamic random colors", false));
 	gui2.add(&parametres);
 
-	gui2.add(vec3Slider.setup("RGB Color", ofVec3f(255, 255, 255), ofVec3f(0, 0, 0), ofVec3f(255, 255, 255)));
-
+	treeColor.set("Couleur de l'arbre", ofColor(120), ofColor(0, 0), ofColor(255, 255, 255));
+	gui2.add(treeColor);
 
 	depart_x = ofGetWindowWidth() / 2;
 	depart_y = ofGetWindowHeight();
@@ -236,7 +236,7 @@ void Renderer::GUI2Setup() {
 
 	v1.set(0, 0, 1, 1);
 	v2.set(0, -longueurLigne, 1, 1);
-	v.set(vec3Slider.getParameter().cast<ofVec3f>());
+	v = treeColor;
 }
 
 //Modele 3D
@@ -349,7 +349,7 @@ void Renderer::updateGUI2Parameters() {
 	e = floatSlider3.getParameter().cast<float>();
 
 	v_previous = v;
-	v = vec3Slider.getParameter().cast<ofVec3f>();
+	v = treeColor;
 
 	cmode_2.setup("Current mode ", current_mode);
 }
@@ -512,7 +512,7 @@ void Renderer::modeArbreFractal() {
 
 
 	//couleur
-	if (v.get().x != v_previous.x || v.get().y != v_previous.y || v.get().z != v_previous.z)
+	if (v != v_previous)
 		for (int j = 0; j < arbre.size(); j++)
 			arbre[j].modifier_couleur(v);
 
