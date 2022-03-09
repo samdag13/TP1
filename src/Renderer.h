@@ -134,7 +134,7 @@ public:
 	ofxLabel er;
 	ofxLabel df;
 	ofxLabel ty;
-
+	ofxLabel op;
 	ofLight light;
 
 	//camera

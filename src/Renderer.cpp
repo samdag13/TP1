@@ -265,6 +265,7 @@ void Renderer::GUI3Setup() {
 	commandes_camera.add(er.setup("e, r ", "Yaw"));
 	commandes_camera.add(df.setup("d, f ", "Roll"));
 	commandes_camera.add(ty.setup("t, y ", "Zoom"));
+	commandes_camera.add(op.setup("o, p ", "Mode de projection"));
 	gui3.add(&commandes_camera);
 
 	types_objets.setup("Type de modele");
