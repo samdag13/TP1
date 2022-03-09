@@ -25,6 +25,46 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
+	renderer.is_camera_move_forward = is_key_press_q;
+	renderer.is_camera_move_backward = is_key_press_w;
+
+	renderer.is_camera_move_left = is_key_press_left;
+	renderer.is_camera_move_right = is_key_press_right;
+
+	renderer.is_camera_move_up = is_key_press_down;
+	renderer.is_camera_move_down = is_key_press_up;
+
+	renderer.is_camera_tilt_up = is_key_press_a;
+	renderer.is_camera_tilt_down = is_key_press_s;
+
+	renderer.is_camera_pan_left = is_key_press_r;
+	renderer.is_camera_pan_right = is_key_press_e;
+
+	renderer.is_camera_roll_left = is_key_press_d;
+	renderer.is_camera_roll_right = is_key_press_f;
+
+	renderer.is_camera_fov_narrow = is_key_press_t;
+	renderer.is_camera_fov_wide = is_key_press_y;
+	*/
+	/*
+	is_key_press_up = false;
+	is_key_press_down = false;
+	is_key_press_left = false;
+	is_key_press_right = false;
+
+	is_key_press_q = false;
+	is_key_press_w = false;
+	is_key_press_a = false;
+	is_key_press_s = false;
+	is_key_press_e = false;
+	is_key_press_r = false;
+	is_key_press_d = false;
+	is_key_press_f = false;
+	is_key_press_t = false;
+	is_key_press_y = false;
+	is_key_press_o = false;
+	is_key_press_p = false;
+	*/
 	renderer.update();
 
 }
@@ -288,10 +328,6 @@ void ofApp::mouseReleased(int x, int y, int button) {
 
 		renderer.paint.add_shape(renderer.paint.shape_mode);
 
-		/*
-		ofFileDialogResult result = ofSystemLoadDialog("Choisissez une image");
-		if (result.bSuccess) { ofLog() << result.filePath; }
-		*/
 	}
 }
 

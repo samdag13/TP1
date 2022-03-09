@@ -2,11 +2,17 @@
 
 void Renderer::setup() {
 	ofBackground(50);
-	ofSetFrameRate(90);
+	ofSetFrameRate(60);
 
+	setup_camera();
+
+	//Menu de base
 	GUISetup();
+	//Menu du dessin 2D
 	GUI1Setup();
+	//Menu du dessin de l'arbre fractal
 	GUI2Setup();
+	//Menu de la visualisation 3D
 	GUI3Setup();
 }
 
@@ -35,80 +41,74 @@ void Renderer::update() {
 }
 
 void Renderer::draw() {
-	if (mode == 0)
-	{
-		ofDisableDepthTest();
-		ofDisableLighting();
-		gui.draw();
-	}
-	
-	else if (mode == 1)
-	{
-		paint.draw();
-		prim_choice.draw();
-		ofDisableDepthTest();
-		ofDisableLighting();
-		gui1.draw();
-	}
-		
-	else if (mode == 2)
-	{
-		ofDisableDepthTest();
-		ofDisableLighting();
-		gui2.draw();
-	}
-		
-	else if (mode == 3)
-	{
-		ofDisableDepthTest();
-		ofDisableLighting();
 
-		gui3.draw();
-
-		ofEnableDepthTest();
-		ofEnableLighting();
+	//Illumination seulement dans la visualisation 3D
+	if (mode != 3) {
+		ofDisableDepthTest();
+		ofDisableLighting();
 	}
 
+	//Dessin selon le mode actif
 	switch (mode)
 	{
-	//dessin 2D
-	case 1:
-		break;
+		//dessin 2D
+		case 0:
 
-	//arbre fractal
-	case 2:
+			gui.draw();
+			break;
 
-		//déplacer le centre ;
-		ofTranslate(depart_x, depart_y);
-
-		for (int j = arbre.size() - 1; j >= 0; j--)
-		{
-			arbre[j].showLine();
-		}
-		break;
-
-	//modele 3D
-	case 3:
-		switch (modele)
-		{
 		case 1:
-			camera->begin();
-			alien.draw(OF_MESH_FILL);
-			camera->end();
+
+			paint.draw();
+			primitive_choice.draw();
+			gui1.draw();
 			break;
+
+		//arbre fractal
 		case 2:
-			camera->begin();
-			car.draw(OF_MESH_FILL);
-			camera->end();
+
+			gui2.draw();
+			//déplacer le centre ;
+			ofTranslate(depart_x, depart_y);
+
+			for (int j = arbre.size() - 1; j >= 0; j--)
+			{
+				arbre[j].showLine();
+			}
+
 			break;
+
+		//modele 3D
 		case 3:
-			camera->begin();
-			piano.draw(OF_MESH_FILL);
-			camera->end();
+
+			//Définit le modèle à rendre
+			switch (modele)
+			{
+			case 1:
+				camera->begin();
+				alien.draw(OF_MESH_FILL);
+				camera->end();
+				break;
+			case 2:
+				camera->begin();
+				car.draw(OF_MESH_FILL);
+				camera->end();
+				break;
+			case 3:
+				camera->begin();
+				piano.draw(OF_MESH_FILL);
+				camera->end();
+				break;
+			}
+
+			//Désactivation de l'illumination pour dessiner le gui
+			ofDisableDepthTest();
+			ofDisableLighting();
+			gui3.draw();
+			//Activation de l'illumination du modèle
+			ofEnableDepthTest();
+			ofEnableLighting();
 			break;
-		}
-		
-		break;
 	}
 }
 
@@ -135,7 +135,6 @@ void Renderer::image_export()
 		image.save(file_name);
 	}
 
-	//sauvegarder le fichier image
 
 	ofLog() << "<export image: " << file_name << ">";
 
@@ -143,7 +142,7 @@ void Renderer::image_export()
 
 void Renderer::image_import()
 {
-
+	paint.add_image();
 }
 
 //menus
@@ -185,19 +184,29 @@ void Renderer::GUI1Setup() {
 	gui1.add(fill_color_2D);
 	gui1.add(stroke_width_2D);
 
-	prim_choice.setup("Choix de primitive");
-	prim_choice.setPosition(ofGetWidth() - 260, 10);
+	primitive_choice.setup("Choix de primitive");
+	primitive_choice.setPosition(ofGetWidth() - 260, 10);
 	b_line.setup("Ligne");
 	b_ell.setup("Ellipse");
 	b_tri.setup("Triangle");
 	b_point.setup("Cercle");
 	b_rect.setup("Rectangle");
 
-	prim_choice.add(&b_line);
-	prim_choice.add(&b_ell);
-	prim_choice.add(&b_rect);
-	prim_choice.add(&b_point);
-	prim_choice.add(&b_tri);
+	img_start_x.set("Image import x start position", 100, 0, ofGetWindowWidth());
+	img_start_y.set("Image import y start position", 100, 0, ofGetWindowHeight());
+	img_end_x.set("Image import x end position", 500, 0, ofGetWindowWidth());
+	img_end_y.set("Image import y end position", 500, 0, ofGetWindowHeight());
+
+	primitive_choice.add(&b_line);
+	primitive_choice.add(&b_ell);
+	primitive_choice.add(&b_rect);
+	primitive_choice.add(&b_point);
+	primitive_choice.add(&b_tri);
+	primitive_choice.add(img_start_x);
+	primitive_choice.add(img_start_y);
+	primitive_choice.add(img_end_x);
+	primitive_choice.add(img_end_y);
+	
 
 }
 
@@ -274,6 +283,7 @@ void Renderer::GUI3Setup() {
 	types_objets.add(l_piano.setup("c ", "Piano"));
 	gui3.add(&types_objets);
 
+	/*
 	alien.loadModel("alien.obj");
 	car.loadModel("car.obj");
 	piano.loadModel("piano.obj");
@@ -290,7 +300,7 @@ void Renderer::GUI3Setup() {
 	camera_far = 1750.0f;
 
 	camera_fov = 60.0f;
-	camera_fov_delta = 16.0f;
+	camera_fov_delta = 30.0f;
 
 	speed_delta = 250.0f;
 
@@ -318,6 +328,7 @@ void Renderer::GUI3Setup() {
 	reset();
 
 	setup_camera();
+	*/
 }
 
 //updates
@@ -325,6 +336,11 @@ void Renderer::updateGUI1Parameters(){
 	paint.fill_color = fill_color_2D;
 	paint.stroke_color = stroke_color_2D;
 	paint.stroke_width = stroke_width_2D;
+
+	paint.img_start_x = img_start_x;
+	paint.img_start_y = img_start_y;
+	paint.img_end_x = img_end_x;
+	paint.img_end_y = img_end_y;
 	
 	if (b_line) paint.shape_mode = Primitive2D::line;
 	if (b_point) paint.shape_mode = Primitive2D::point;
@@ -530,7 +546,6 @@ void Renderer::modeArbreFractal() {
 		for (int j = 0; j < arbre.size(); j++)
 			arbre[j].modifier_couleur(v);
 
-
 }
 
 void Renderer::modeModele3D() {
@@ -591,6 +606,51 @@ void Renderer::modeModele3D() {
 
 //camera
 void Renderer::setup_camera() {
+	alien.loadModel("alien.obj");
+	car.loadModel("car.obj");
+	piano.loadModel("piano.obj");
+
+	light.setAmbientColor(ofColor(255, 0, 0));
+	light.setDiffuseColor(ofColor(255));
+	light.setPosition(0.0f, -1000.0f, 1000.0f);
+	light.enable();
+
+	camera_position = { 0.0f, 0.0f, 0.0f };
+	camera_target = { 0.0f, 0.0f, 0.0f };
+
+	camera_near = 50.0f;
+	camera_far = 1750.0f;
+
+	camera_fov = 60.0f;
+	camera_fov_delta = 30.0f;
+
+	speed_delta = 250.0f;
+
+	offset_objet = 64.0f;
+
+	is_camera_move_left = false;
+	is_camera_move_right = false;
+	is_camera_move_up = false;
+	is_camera_move_down = false;
+	is_camera_move_forward = false;
+	is_camera_move_backward = false;
+
+	is_camera_tilt_up = false;
+	is_camera_tilt_down = false;
+	is_camera_pan_left = false;
+	is_camera_pan_right = false;
+	is_camera_roll_left = false;
+	is_camera_roll_right = false;
+
+	is_camera_fov_narrow = false;
+	is_camera_fov_wide = false;
+
+	is_camera_perspective = true;
+
+	reset();
+
+
+
 	switch (camera_active)
 	{
 	case 0:

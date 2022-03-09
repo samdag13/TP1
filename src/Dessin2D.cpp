@@ -1,8 +1,5 @@
 #include "Dessin2D.h"
 
-void draw(){
-}
-
 void Dessin2D::add_shape(Primitive2D prim) {
 	ShapeProperties shape;
 	shape.type = prim;
@@ -168,13 +165,42 @@ void Dessin2D::draw() {
 				shapes[i].height);
 
 			break;
-		default:
+
+		case Primitive2D::image:
+			ofSetColor(255, 255, 255, 255);
+			shapes[i].image.load(shapes[i].path);
+			shapes[i].image.draw(
+				shapes[i].x1,
+				shapes[i].y1,
+				shapes[i].x2,
+				shapes[i].y2);
 			break;
 		}
 	}
 
 	draw_cursor();
 	if (mouse_press) draw_outline();
+}
+
+void Dessin2D::add_image() {
+
+	ofFileDialogResult result = ofSystemLoadDialog("Choisissez une image");
+
+	if (result.bSuccess) { 
+
+		ShapeProperties img;
+		img.type = Primitive2D::image;
+
+		img.path = result.filePath;
+		img.x1 = img_start_x;
+		img.y1 = img_start_y;
+		img.x2 = img_end_x;
+		img.y2 = img_end_y;
+
+		shapes.push_back(img);
+
+
+	}
 }
 
 void Dessin2D::draw_outline() const {
@@ -190,6 +216,7 @@ void Dessin2D::draw_outline() const {
 
 	ofNoFill();
 	ofDrawRectRounded(x1, y1, w, h, 4.0f);
+
 
 	switch (shape_mode)
 	{
@@ -282,9 +309,8 @@ void Dessin2D::draw_outline() const {
 			h);
 
 		break;
-	default:
-		break;
 	}
+	
 }
 
 void Dessin2D::draw_cursor() const {
