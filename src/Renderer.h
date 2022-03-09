@@ -59,7 +59,7 @@ public:
 	ofxPanel gui1;	
 	ofxPanel gui2;
 	ofxPanel gui3;
-	ofxPanel prim_choice;
+	ofxPanel primitive_choice;
 
 	//indications pour mode 0
 	ofxLabel cmode;
@@ -82,6 +82,11 @@ public:
 	ofParameter<ofColor> stroke_color_2D;
 	ofParameter<ofColor> fill_color_2D;
 	ofParameter<float> stroke_width_2D;
+	ofParameter<int> img_start_x;
+	ofParameter<int> img_start_y;
+	ofParameter<int> img_end_x;
+	ofParameter<int> img_end_y;
+
 
 	ofxButton b_line;
 	ofxButton b_point;

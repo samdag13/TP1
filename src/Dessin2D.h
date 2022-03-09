@@ -3,8 +3,8 @@
 #include "ofMain.h"
 
 
-enum class Primitive2D { point, line, rectangle, ellipse, triangle };
-enum class CursorType { point, cross, rectangle, ellipse, x_shape };
+enum class Primitive2D { point, line, rectangle, ellipse, triangle, image };
+enum class CursorType { point, cross, rectangle, ellipse, x_shape };                                        
 
 struct ShapeProperties {
 	Primitive2D type;
@@ -31,7 +31,12 @@ struct ShapeProperties {
 	int fill_g;
 	int fill_b;
 	int fill_a;
+
+	std::string path;
+	ofPixels pixels;
+	ofImage image;
 };
+
 
 class Dessin2D
 {
@@ -51,6 +56,11 @@ public:
 	int mouse_current_x = 0;
 	int mouse_current_y = 0;
 
+	int img_start_x;
+	int img_start_y;
+	int img_end_x;
+	int img_end_y;
+
 	bool mouse_press = false;
 
 	void add_shape(Primitive2D prim);
@@ -58,6 +68,7 @@ public:
 
 	void draw();
 
+	void add_image();
 	void draw_outline() const;
 	void draw_cursor() const;
 
