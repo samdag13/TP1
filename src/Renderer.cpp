@@ -186,16 +186,20 @@ void Renderer::GUI1Setup() {
 	indications_1.add(imageimport_1.setup("i ", "Importer une image"));
 	gui1.add(&indications_1);
 
-	stroke_color_2D.set("Couleur du trait", ofColor(120), ofColor(0, 0), ofColor(255, 255, 255));
+	stroke_color_2D.set("Couleur du trait", ofColor(0), ofColor(0, 0), ofColor(255, 255, 255));
 	fill_color_2D.set("Couleur de remplissage", ofColor(255), ofColor(0, 0), ofColor(255, 255, 255));
-	stroke_width_2D.set("Epaisseur du trait", 5.0f, 0.0f, 10.0f);
+	stroke_width_2D.set("Epaisseur du trait", 1.0f, 0.0f, 10.0f);
 
-	gui1.add(stroke_color_2D);
 	gui1.add(fill_color_2D);
+	gui1.add(stroke_color_2D);
 	gui1.add(stroke_width_2D);
 
+	gui1.add(b_undo.setup("Undo"));
+	gui1.add(b_redo.setup("Redo"));
+	gui1.add(b_clear.setup("Clear"));
+
 	primitive_choice.setup("Choix de primitive");
-	primitive_choice.setPosition(ofGetWidth() - 260, 10);
+	primitive_choice.setPosition(ofGetWidth() - 270, 10);
 	b_line.setup("Ligne");
 	b_ell.setup("Ellipse");
 	b_tri.setup("Triangle");
@@ -403,6 +407,12 @@ void Renderer::updateGUI3Parameters() {
 
 //modes
 void Renderer::modeDessin2D() {
+	if (b_undo)
+		paint.undo();
+	if (b_redo)
+		paint.redo();
+	if (b_clear)
+		paint.clear_shapes();
 }
 
 void Renderer::modeArbreFractal() {

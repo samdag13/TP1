@@ -42,6 +42,7 @@ class Dessin2D
 {
 public:
 	std::vector<ShapeProperties> shapes;
+	std::vector<ShapeProperties> backup;
 	Primitive2D shape_mode = Primitive2D::rectangle;
 
 	ofColor fill_color;
@@ -65,6 +66,8 @@ public:
 
 	void add_shape(Primitive2D prim);
 	void clear_shapes();
+	void undo();
+	void redo();
 
 	void draw();
 
