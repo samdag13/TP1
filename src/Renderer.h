@@ -9,8 +9,8 @@
 class Renderer
 {
 public:
-	int depart_x;
-	int depart_y;
+	int depart_x = ofGetWindowWidth() / 2;
+	int depart_y = ofGetWindowHeight();
 
 	int longueurLigne;
 
@@ -34,9 +34,12 @@ public:
 	ofParameter<float> s = 0.5;
 	float e_previous;
 	ofParameter<float> e = 2;
-
 	int c_previous;
 	ofParameter<int> c = 0;
+	int tx_previous;
+	ofParameter<int> t_x = depart_x;
+	int ty_previous;
+	ofParameter<int> t_y = depart_y;
 
 	//compter le nombre d'étages
 	int count;
@@ -107,6 +110,8 @@ public:
 
 	//input mode 2
 	ofxIntSlider intSlider;
+	ofxIntSlider intSlider_trans_x;
+	ofxIntSlider intSlider_trans_y;
 	ofxFloatSlider floatSlider1;
 	ofxFloatSlider floatSlider2;
 	ofxFloatSlider floatSlider3;
@@ -140,6 +145,7 @@ public:
 	ofxLabel df;
 	ofxLabel ty;
 	ofxLabel op;
+
 	ofLight light;
 
 	//camera

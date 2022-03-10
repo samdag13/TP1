@@ -52,6 +52,8 @@ public:
 
 	void modifier_epaisseur(float linewidth);
 
+	void modifier_trans(int x, int y);
+
 	void dynamic_random_color();
 
 	void static_random_color();

@@ -36,8 +36,6 @@ void Dessin2D::draw() {
 
 	for (int i = 0; i < shapes.size(); i++) {
 
-
-
 		switch (shapes[i].type)
 		{
 		case Primitive2D::point:

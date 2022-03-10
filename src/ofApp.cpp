@@ -45,7 +45,7 @@ void ofApp::update(){
 
 	renderer.is_camera_fov_narrow = is_key_press_t;
 	renderer.is_camera_fov_wide = is_key_press_y;
-	*/
+
 	/*
 	is_key_press_up = false;
 	is_key_press_down = false;
