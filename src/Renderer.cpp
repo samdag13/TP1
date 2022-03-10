@@ -4,7 +4,7 @@ void Renderer::setup() {
 	ofBackground(50);
 	ofSetFrameRate(60);
 
-	setup_camera();
+	//setup_camera();
 
 	//Menu de base
 	GUISetup();
@@ -192,21 +192,32 @@ void Renderer::GUI1Setup() {
 	b_point.setup("Cercle");
 	b_rect.setup("Rectangle");
 
+	import_img_sliders.setup("Import d'image");
+
 	img_start_x.set("Image import x start position", 100, 0, ofGetWindowWidth());
 	img_start_y.set("Image import y start position", 100, 0, ofGetWindowHeight());
 	img_end_x.set("Image import x end position", 500, 0, ofGetWindowWidth());
 	img_end_y.set("Image import y end position", 500, 0, ofGetWindowHeight());
+
+	import_img_sliders.add(img_start_x);
+	import_img_sliders.add(img_start_y);
+	import_img_sliders.add(img_end_x);
+	import_img_sliders.add(img_end_y);
+
+	
 
 	primitive_choice.add(&b_line);
 	primitive_choice.add(&b_ell);
 	primitive_choice.add(&b_rect);
 	primitive_choice.add(&b_point);
 	primitive_choice.add(&b_tri);
+	primitive_choice.add(&import_img_sliders);
+	/*
 	primitive_choice.add(img_start_x);
 	primitive_choice.add(img_start_y);
 	primitive_choice.add(img_end_x);
 	primitive_choice.add(img_end_y);
-	
+	*/
 
 }
 
@@ -282,7 +293,7 @@ void Renderer::GUI3Setup() {
 	types_objets.add(l_piano.setup("c ", "Piano"));
 	gui3.add(&types_objets);
 
-	/*
+	
 	alien.loadModel("alien.obj");
 	car.loadModel("car.obj");
 	piano.loadModel("piano.obj");
@@ -327,7 +338,7 @@ void Renderer::GUI3Setup() {
 	reset();
 
 	setup_camera();
-	*/
+	
 }
 
 //updates
@@ -605,7 +616,7 @@ void Renderer::modeModele3D() {
 
 //camera
 void Renderer::setup_camera() {
-	alien.loadModel("alien.obj");
+/*	alien.loadModel("alien.obj");
 	car.loadModel("car.obj");
 	piano.loadModel("piano.obj");
 
@@ -647,7 +658,7 @@ void Renderer::setup_camera() {
 	is_camera_perspective = true;
 
 	reset();
-
+*/
 
 
 	switch (camera_active)

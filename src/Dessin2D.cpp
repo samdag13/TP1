@@ -28,11 +28,30 @@ void Dessin2D::add_shape(Primitive2D prim) {
 	shapes.push_back(shape);
 }
 
-void Dessin2D::clear_shapes() {
+void Dessin2D::clear_contents() {
 	shapes.clear();
+	images.clear();
 }
 
+void Dessin2D::draw_image() {
+
+
+	for (ShapeProperties i : images) {
+		ofSetColor(255, 255, 255, 255);
+		i.image.load(i.path);
+		i.image.draw(
+			i.x1,
+			i.y1,
+			i.x2,
+			i.y2);
+	}
+
+}
 void Dessin2D::draw() {
+
+
+
+	draw_image();
 
 	for (int i = 0; i < shapes.size(); i++) {
 
@@ -165,16 +184,6 @@ void Dessin2D::draw() {
 				shapes[i].height);
 
 			break;
-
-		case Primitive2D::image:
-			ofSetColor(255, 255, 255, 255);
-			shapes[i].image.load(shapes[i].path);
-			shapes[i].image.draw(
-				shapes[i].x1,
-				shapes[i].y1,
-				shapes[i].x2,
-				shapes[i].y2);
-			break;
 		}
 	}
 
@@ -186,10 +195,12 @@ void Dessin2D::add_image() {
 
 	ofFileDialogResult result = ofSystemLoadDialog("Choisissez une image");
 
+
+	if (images.size() > 1)images.clear();
+
 	if (result.bSuccess) { 
 
 		ShapeProperties img;
-		img.type = Primitive2D::image;
 
 		img.path = result.filePath;
 		img.x1 = img_start_x;
@@ -197,10 +208,10 @@ void Dessin2D::add_image() {
 		img.x2 = img_end_x;
 		img.y2 = img_end_y;
 
-		shapes.push_back(img);
-
-
+		images.push_back(img);
 	}
+
+
 }
 
 void Dessin2D::draw_outline() const {

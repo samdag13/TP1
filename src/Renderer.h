@@ -87,6 +87,7 @@ public:
 	ofParameter<int> img_end_x;
 	ofParameter<int> img_end_y;
 
+	ofxGuiGroup import_img_sliders;
 
 	ofxButton b_line;
 	ofxButton b_point;

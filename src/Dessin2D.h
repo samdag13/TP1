@@ -43,6 +43,7 @@ class Dessin2D
 public:
 	std::vector<ShapeProperties> shapes;
 	Primitive2D shape_mode = Primitive2D::rectangle;
+	std::vector<ShapeProperties> images;
 
 	ofColor fill_color;
 	ofColor stroke_color;
@@ -64,7 +65,7 @@ public:
 	bool mouse_press = false;
 
 	void add_shape(Primitive2D prim);
-	void clear_shapes();
+	void clear_contents();
 
 	void draw();
 
@@ -77,6 +78,7 @@ public:
 	void draw_cursor_ellipse(int x, int y) const;
 	void draw_cursor_rectangle(int x, int y) const;
 	void draw_cursor_x(int x, int y) const;
+	void draw_image();
 
 	void point(float x, float y, float radius) const;
 	void line(float x1, float y1, float x2, float y2) const;

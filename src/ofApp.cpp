@@ -149,8 +149,10 @@ void ofApp::keyReleased(int key){
 		renderer.image_export();
 		break;
 	case 'i':
-		renderer.image_import();
+		if(renderer.mode == 1) renderer.image_import();
 		break;
+	case 'r':
+		renderer.paint.clear_contents();
 
 		//different 3D modeles
 	case'z':
@@ -310,8 +312,15 @@ void ofApp::mouseExited(int x, int y){
 }
 
 //--------------------------------------------------------------
-void ofApp::windowResized(int w, int h){
+void ofApp::windowResized(int w, int h) {
 
+	if (renderer.mode==1) {
+		renderer.gui1.setPosition(10,10);
+		renderer.primitive_choice.setPosition(ofGetWidth() - 260, 10);
+
+		renderer.img_end_x.set("Image import x end position", 500, 0, ofGetWindowWidth());
+		renderer.img_end_y.set("Image import y end position", 500, 0, ofGetWindowHeight());
+	}
 }
 
 //--------------------------------------------------------------
