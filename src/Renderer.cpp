@@ -99,6 +99,16 @@ void Renderer::draw() {
 				piano.draw(OF_MESH_FILL);
 				camera->end();
 				break;
+			case 4:
+				camera->begin();
+				ofDrawBox(100, 100, 100);
+				camera->end();
+				break;
+			case 5:
+				camera->begin();
+				ofDrawSphere(100,100,100,100);
+				camera->end();
+				break;
 			}
 
 			//Désactivation de l'illumination pour dessiner le gui
@@ -281,6 +291,8 @@ void Renderer::GUI3Setup() {
 	types_objets.add(l_alien.setup("z ", "Alien"));
 	types_objets.add(l_car.setup("x ", "Car"));
 	types_objets.add(l_piano.setup("c ", "Piano"));
+	types_objets.add(l_cube.setup("v ", "Cube"));
+	types_objets.add(l_sphere.setup("b ", "Sphere"));
 	gui3.add(&types_objets);
 
 	//setup camera et models
@@ -288,7 +300,7 @@ void Renderer::GUI3Setup() {
 	car.loadModel("car.obj");
 	piano.loadModel("piano.obj");
 
-	light.setAmbientColor(ofColor(255, 0, 0));
+	light.setAmbientColor(ofColor(0, 200, 255));
 	light.setDiffuseColor(ofColor(255));
 	light.setPosition(0.0f, -1000.0f, 1000.0f);
 	light.enable();
@@ -707,4 +719,3 @@ void Renderer::reset()
 
 	ofLog() << "<reset>";
 }
-

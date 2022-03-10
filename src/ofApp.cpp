@@ -46,25 +46,6 @@ void ofApp::update(){
 	renderer.is_camera_fov_narrow = is_key_press_t;
 	renderer.is_camera_fov_wide = is_key_press_y;
 
-	/*
-	is_key_press_up = false;
-	is_key_press_down = false;
-	is_key_press_left = false;
-	is_key_press_right = false;
-
-	is_key_press_q = false;
-	is_key_press_w = false;
-	is_key_press_a = false;
-	is_key_press_s = false;
-	is_key_press_e = false;
-	is_key_press_r = false;
-	is_key_press_d = false;
-	is_key_press_f = false;
-	is_key_press_t = false;
-	is_key_press_y = false;
-	is_key_press_o = false;
-	is_key_press_p = false;
-	*/
 	renderer.update();
 
 }
@@ -203,6 +184,14 @@ void ofApp::keyReleased(int key){
 	case'c':
 		if (renderer.mode == 3)
 			renderer.modele = 3;
+		break;
+	case'v':
+		if (renderer.mode == 3)
+			renderer.modele = 4;
+		break;
+	case'b':
+		if (renderer.mode == 3)
+			renderer.modele = 5;
 		break;
 	}
 	//camera

@@ -137,6 +137,8 @@ public:
 	ofxLabel l_alien;
 	ofxLabel l_car;
 	ofxLabel l_piano;
+	ofxLabel l_cube;
+	ofxLabel l_sphere;
 
 	ofxLabel fleches;
 	ofxLabel qw;
