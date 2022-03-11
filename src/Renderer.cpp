@@ -391,6 +391,11 @@ void Renderer::GUI3Setup() {
 //updates
 void Renderer::updateGUI1Parameters(){
 
+	ofColor tmp1 = stroke_color_2D;
+	ofColor stroke = ofColor::fromHsb(stroke_color_hue, stroke_color_sat, stroke_color_bri, tmp1.a);
+	ofColor tmp2 = fill_color_2D;
+	ofColor fill = ofColor::fromHsb(fill_color_hue, fill_color_sat, fill_color_bri, tmp2.a);
+	
 	if (paint.fill_color != fill_color_2D || paint.stroke_color != stroke_color_2D) {
 		paint.fill_color = fill_color_2D;
 		paint.stroke_color = stroke_color_2D;
@@ -407,16 +412,14 @@ void Renderer::updateGUI1Parameters(){
 
 	}
 
-	else {
-		ofColor stroke = ofColor::fromHsb(stroke_color_hue, stroke_color_sat, stroke_color_bri);
-		ofColor fill = ofColor::fromHsb(fill_color_hue, fill_color_sat, fill_color_bri);
+	else if(tmp2 != fill || tmp1 != stroke) {
 		paint.fill_color = fill;
 		paint.stroke_color = stroke;
 		fill_color_2D = fill;
 		stroke_color_2D = stroke;
 
 	}
-
+	
 
 	paint.img_start_x = img_start_x;
 	paint.img_start_y = img_start_y;
