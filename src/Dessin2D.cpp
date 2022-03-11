@@ -32,20 +32,21 @@ void Dessin2D::clear_contents() {
 	backup.clear();
 	shapes.clear();
 	images.clear();
+	images_properties.clear();
 }
 
 void Dessin2D::draw_image() {
 
-	for (ShapeProperties i : images) {
+	for (int i = 0; i < images.size(); i++) {
 		ofSetColor(255, 255, 255, 255);
-		i.image.load(i.path);
-		i.image.draw(
-			i.x1,
-			i.y1,
-			i.x2,
-			i.y2);
+		images[i].draw(
+			images_properties[i].x1,
+			images_properties[i].y1,
+			images_properties[i].x2,
+			images_properties[i].y2);
 	}
 
+	
 }
 	void Dessin2D::undo() {
 		if (shapes.size() > 0)
@@ -211,8 +212,10 @@ void Dessin2D::add_image() {
 	ofFileDialogResult result = ofSystemLoadDialog("Choisissez une image");
 
 
-	if (images.size() > 1)images.clear();
-
+	if (images.size() > 5) {
+		images.clear();
+		images_properties.clear();
+	}
 	if (result.bSuccess) { 
 
 		ShapeProperties img;
@@ -222,8 +225,11 @@ void Dessin2D::add_image() {
 		img.y1 = img_start_y;
 		img.x2 = img_end_x;
 		img.y2 = img_end_y;
+		images_properties.push_back(img);
 
-		images.push_back(img);
+		ofImage loaded_img;
+		loaded_img.load(img.path);
+		images.push_back(loaded_img);
 	}
 
 

@@ -33,8 +33,6 @@ struct ShapeProperties {
 	int fill_a;
 
 	std::string path;
-	ofPixels pixels;
-	ofImage image;
 };
 
 
@@ -44,11 +42,14 @@ public:
 	std::vector<ShapeProperties> shapes;
 	std::vector<ShapeProperties> backup;
 	Primitive2D shape_mode = Primitive2D::rectangle;
-	std::vector<ShapeProperties> images;
+	std::vector<ShapeProperties> images_properties;
+	std::vector<ofImage> images;
 
 	ofColor fill_color;
 	ofColor stroke_color;
 	ofColor cursor_press_color = ofColor(120, 35, 50, 255);
+
+
 
 	float stroke_width;
 
