@@ -195,9 +195,6 @@ void Renderer::GUI1Setup() {
 	gui1.add(stroke_color_2D);
 	gui1.add(stroke_width_2D);
 
-	gui1.add(b_undo.setup("Undo"));
-	gui1.add(b_redo.setup("Redo"));
-	gui1.add(b_clear.setup("Clear"));
 
 	primitive_choice.setup("Choix de primitive");
 	primitive_choice.setPosition(ofGetWidth() - 270, 10);
@@ -209,10 +206,10 @@ void Renderer::GUI1Setup() {
 
 	import_img_sliders.setup("Import d'image");
 
-	img_start_x.set("Image import x start position", 100, 0, ofGetWindowWidth());
-	img_start_y.set("Image import y start position", 100, 0, ofGetWindowHeight());
-	img_end_x.set("Image import x end position", 500, 0, ofGetWindowWidth());
-	img_end_y.set("Image import y end position", 500, 0, ofGetWindowHeight());
+	img_start_x.set("x start position", 100, 0, ofGetWindowWidth());
+	img_start_y.set("y start position", 100, 0, ofGetWindowHeight());
+	img_end_x.set("x end position", 500, 0, ofGetWindowWidth());
+	img_end_y.set("y end position", 500, 0, ofGetWindowHeight());
 
 	import_img_sliders.add(img_start_x);
 	import_img_sliders.add(img_start_y);
@@ -227,6 +224,9 @@ void Renderer::GUI1Setup() {
 	primitive_choice.add(&b_point);
 	primitive_choice.add(&b_tri);
 	primitive_choice.add(&import_img_sliders);
+	primitive_choice.add(b_undo.setup("Undo"));
+	primitive_choice.add(b_redo.setup("Redo"));
+	primitive_choice.add(b_clear.setup("Clear"));
 
 
 }
@@ -254,8 +254,8 @@ void Renderer::GUI2Setup() {
 	parametres.add(floatSlider3.setup("Epaisseur", 2, 0.0, 5));
 	parametres.add(togglestatic.setup("Static random colors", false));
 	parametres.add(toggledynamic.setup("Dynamic random colors", false));
-	parametres.add(intSlider_trans_x.setup("Translation X", depart_x, 0, depart_x * 2));
-	parametres.add(intSlider_trans_y.setup("Translation Y", depart_y, depart_y, 0));
+	parametres.add(intSlider_trans_x.setup("Translation X", depart_x, 0, ofGetWindowWidth()));
+	parametres.add(intSlider_trans_y.setup("Translation Y", depart_y, 0, ofGetWindowHeight()));
 	gui2.add(&parametres);
 
 	treeColor.set("Couleur de l'arbre", ofColor(255), ofColor(0, 0), ofColor(255, 255, 255));
@@ -483,6 +483,7 @@ void Renderer::modeArbreFractal() {
 					}
 					count++;
 				}
+
 		}
 
 	//l'angle
@@ -590,9 +591,21 @@ void Renderer::modeArbreFractal() {
 	{
 		int diffx = t_x - tx_previous;
 		int diffy = t_y - ty_previous;
+		ofMatrix4x4 m;
+		m.set(
+			1, 0, 0, 0,
+			0, 1, 0, 0,
+			0, 0, 1, 0,
+			diffx, diffy, 0, 1);
 
+		//mettre à jour les vi et vf
+		v1 = v1 * m;
+		v2 = v2 * m;
+
+		
 		for (int j = 0; j < arbre.size(); j++)
 			arbre[j].modifier_trans(diffx,diffy);
+		
 	}
 
 }

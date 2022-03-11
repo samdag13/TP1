@@ -35,41 +35,38 @@ void Dessin2D::clear_contents() {
 	images_properties.clear();
 }
 
-void Dessin2D::draw_image() {
+void Dessin2D::draw_bg_image() {
 
-	for (int i = 0; i < images.size(); i++) {
+
+		ofFileDialogResult result = ofSystemLoadDialog("Choisissez une image");
+		bg_image.load(result.filePath);
 		ofSetColor(255, 255, 255, 255);
-		images[i].draw(
-			images_properties[i].x1,
-			images_properties[i].y1,
-			images_properties[i].x2,
-			images_properties[i].y2);
-	}
-
+		bg_image.draw(
+			0,
+			0,
+			ofGetWindowWidth(),
+			ofGetWindowHeight());
 	
 }
-	void Dessin2D::undo() {
-		if (shapes.size() > 0)
-		{
-			backup.push_back(shapes[shapes.size() - 1]);
-			shapes.pop_back();
-		}
+
+void Dessin2D::undo() {
+	if (shapes.size() > 0)
+	{
+		backup.push_back(shapes[shapes.size() - 1]);
+		shapes.pop_back();
 	}
+}
 
 
-	void Dessin2D::redo() {
-		if (backup.size() > 0)
-		{
-			shapes.push_back(backup[backup.size() - 1]);
-			backup.pop_back();
-		}
+void Dessin2D::redo() {
+	if (backup.size() > 0)
+	{
+		shapes.push_back(backup[backup.size() - 1]);
+		backup.pop_back();
 	}
+}
 	
-	void Dessin2D::draw() {
-
-
-
-	draw_image();
+void Dessin2D::draw() {
 
 	for (int i = 0; i < shapes.size(); i++) {
 
@@ -155,8 +152,8 @@ void Dessin2D::draw_image() {
 				shapes[i].fill_b,
 				shapes[i].fill_a);
 			ellipse(
-				shapes[i].x1,
-				shapes[i].y1,
+				shapes[i].x1 - ((shapes[i].x2 - shapes[i].x1)/2),
+				shapes[i].y1 - ((shapes[i].y2 - shapes[i].y1) / 2),
 				shapes[i].width,
 				shapes[i].height);
 			ofNoFill();
@@ -167,8 +164,8 @@ void Dessin2D::draw_image() {
 				shapes[i].stroke_b,
 				shapes[i].stroke_a);
 			ellipse(
-				shapes[i].x1,
-				shapes[i].y1,
+				shapes[i].x1 - ((shapes[i].x2 - shapes[i].x1) / 2),
+				shapes[i].y1 - ((shapes[i].y2 - shapes[i].y1) / 2),
 				shapes[i].width,
 				shapes[i].height);
 			break;
@@ -200,6 +197,14 @@ void Dessin2D::draw_image() {
 				shapes[i].height);
 
 			break;
+		case Primitive2D::image:
+				ofSetColor(255, 255, 255, 255);
+				shapes[i].image.draw(
+					shapes[i].x1,
+					shapes[i].y1,
+					shapes[i].x2,
+					shapes[i].y2);
+				break;
 		}
 	}
 
@@ -212,24 +217,20 @@ void Dessin2D::add_image() {
 	ofFileDialogResult result = ofSystemLoadDialog("Choisissez une image");
 
 
-	if (images.size() > 5) {
-		images.clear();
-		images_properties.clear();
-	}
+
 	if (result.bSuccess) { 
 
 		ShapeProperties img;
 
+		img.type = Primitive2D::image;
 		img.path = result.filePath;
 		img.x1 = img_start_x;
 		img.y1 = img_start_y;
 		img.x2 = img_end_x;
 		img.y2 = img_end_y;
-		images_properties.push_back(img);
+		img.image.load(img.path);
+		shapes.push_back(img);
 
-		ofImage loaded_img;
-		loaded_img.load(img.path);
-		images.push_back(loaded_img);
 	}
 
 
@@ -240,14 +241,12 @@ void Dessin2D::draw_outline() const {
 	float y1 = mouse_press_y;
 	float x2 = mouse_current_x;
 	float y2 = mouse_current_y;
-	float h = y2 - y1;
-	float w = x2 - x1;
+	float h = y1 - y2;
+	float w = x1 - x2;
 
 	ofSetLineWidth(4.0f);
 	ofSetColor(255);
 
-	ofNoFill();
-	ofDrawRectRounded(x1, y1, w, h, 4.0f);
 
 
 	switch (shape_mode)
@@ -258,16 +257,16 @@ void Dessin2D::draw_outline() const {
 		ofSetCircleResolution(100);
 		ofSetColor(fill_color);
 		point(
-			x1 + (w/2.0f),
-			y1 + (h / 2.0f),
+			x2 + (w/2.0f),
+			y2 + (h / 2.0f),
 			sqrt(pow(h, 2) + pow(w, 2)) / 2.0f);
 
 		ofNoFill();
 		ofSetLineWidth(stroke_width);
 		ofSetColor(stroke_color);
 		point(
-			x1 + (w / 2.0f),
-			y1 + (h / 2.0f),
+			x2 + (w / 2.0f),
+			y2 + (h / 2.0f),
 			sqrt(pow(h, 2) + pow(w, 2)) / 2.0f);
 		break;
 
@@ -308,18 +307,18 @@ void Dessin2D::draw_outline() const {
 		ofSetCircleResolution(100);
 		ofSetColor(fill_color);
 		ellipse(
-			x1,
-			y1,
-			w,
-			h);
+			x1 - ((x2 - x1) / 2),
+			y1 - ((y2 - y1) / 2),
+			x2 - x1,
+			y2 - y1);
 		ofNoFill();
 		ofSetLineWidth(stroke_width);
 		ofSetColor(stroke_color);
 		ellipse(
-			x1,
-			y1,
-			w,
-			h);
+			x1 - ((x2 - x1)/2),
+			y1 - ((y2-y1)/2),
+			x2-x1,
+			y2-y1);
 		break;
 
 	case Primitive2D::triangle:
@@ -327,16 +326,16 @@ void Dessin2D::draw_outline() const {
 		ofSetLineWidth(0);
 		ofSetColor(fill_color);
 		triangle(
-			x1,
-			y1,
+			x2,
+			y2,
 			w,
 			h);
 		ofNoFill();
 		ofSetLineWidth(stroke_width);
 		ofSetColor(stroke_color);
 		triangle(
-			x1,
-			y1,
+			x2,
+			y2,
 			w,
 			h);
 

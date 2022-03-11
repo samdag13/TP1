@@ -251,8 +251,11 @@ void ofApp::windowResized(int w, int h) {
 
 	if (renderer.mode==1) {
 
-		renderer.img_end_x.set("Image import x end position", 500, 0, ofGetWindowWidth());
-		renderer.img_end_y.set("Image import y end position", 500, 0, ofGetWindowHeight());
+		renderer.primitive_choice.setPosition(ofGetWindowWidth() - 300, 10);
+		renderer.img_start_x.set("x start position", 100, 0, ofGetWindowWidth());
+		renderer.img_start_y.set("y start position", 100, 0, ofGetWindowHeight());
+		renderer.img_end_x.set("x end position", 500, 0, ofGetWindowWidth());
+		renderer.img_end_y.set("y end position", 500, 0, ofGetWindowHeight());
 	}
 }
 
