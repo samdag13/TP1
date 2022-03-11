@@ -209,8 +209,13 @@ void Renderer::GUI1Setup() {
 	fill_color_2D.set("Couleur de remplissage RGBA", stroke_start_color, min_color, max_color);
 	stroke_width_2D.set("Epaisseur du trait", 1.0f, 0.0f, 10.0f);
 
-	stroke_color_hsb.set("Couleur du trait HSB", fill_hsb, min_hsb, max_hsb);
-	fill_color_hsb.set("Couleur de remplissage HSB", stroke_hsb, min_hsb, max_hsb);
+	stroke_color_hue.set("Hue", stroke_start_color.getHue(), 0, 255);
+	stroke_color_sat.set("Saturation", stroke_start_color.getSaturation(), 0, 255);
+	stroke_color_bri.set("Brightness", stroke_start_color.getBrightness(), 0, 255);
+
+	fill_color_hue.set("Hue", fill_start_color.getHue(), 0, 255);
+	fill_color_sat.set("Saturation", fill_start_color.getSaturation(), 0, 255);
+	fill_color_bri.set("Brightness", fill_start_color.getBrightness(), 0, 255);
 
 	gui1.add(fill_color_2D);
 	gui1.add(stroke_color_2D);
@@ -237,6 +242,16 @@ void Renderer::GUI1Setup() {
 	import_img_sliders.add(img_end_x);
 	import_img_sliders.add(img_end_y);
 
+	stroke_HSB.setup("Couleur du trait HSB");
+	stroke_HSB.add(stroke_color_hue);
+	stroke_HSB.add(stroke_color_sat);
+	stroke_HSB.add(stroke_color_bri);
+
+	fill_HSB.setup("Couleur de remplissage HSB");
+	fill_HSB.add(fill_color_hue);
+	fill_HSB.add(fill_color_sat);
+	fill_HSB.add(fill_color_bri);
+
 	
 
 	primitive_choice.add(&b_line);
@@ -248,8 +263,8 @@ void Renderer::GUI1Setup() {
 	primitive_choice.add(b_undo.setup("Undo"));
 	primitive_choice.add(b_redo.setup("Redo"));
 	primitive_choice.add(b_clear.setup("Clear"));
-	primitive_choice.add(stroke_color_hsb);
-	primitive_choice.add(fill_color_hsb);
+	primitive_choice.add(&stroke_HSB);
+	primitive_choice.add(&fill_HSB);
 
 
 }
@@ -376,14 +391,33 @@ void Renderer::GUI3Setup() {
 
 //updates
 void Renderer::updateGUI1Parameters(){
-	paint.fill_color = fill_color_2D;
-	paint.stroke_color = stroke_color_2D;
-	paint.stroke_width = stroke_width_2D;
 
-	ofLog() << "hue :" << paint.fill_color.getHue();
-	ofLog() << "brightness :" << paint.fill_color.getBrightness();
-	ofLog() << "saturation :" << paint.fill_color.getSaturation();
-	ofLog() << std::endl;
+	if (paint.fill_color != fill_color_2D || paint.stroke_color != stroke_color_2D) {
+		paint.fill_color = fill_color_2D;
+		paint.stroke_color = stroke_color_2D;
+		paint.stroke_width = stroke_width_2D;
+
+		stroke_color_hue = paint.stroke_color.getHue();
+		stroke_color_sat = paint.stroke_color.getSaturation();
+		stroke_color_bri = paint.stroke_color.getBrightness();
+
+		fill_color_hue = paint.fill_color.getHue();
+		fill_color_sat = paint.fill_color.getSaturation();
+		fill_color_bri = paint.fill_color.getBrightness();
+
+
+	}
+
+	else {
+		ofColor stroke = ofColor::fromHsb(stroke_color_hue, stroke_color_sat, stroke_color_bri);
+		ofColor fill = ofColor::fromHsb(fill_color_hue, fill_color_sat, fill_color_bri);
+		paint.fill_color = fill;
+		paint.stroke_color = stroke;
+		fill_color_2D = fill;
+		stroke_color_2D = stroke;
+
+	}
+
 
 	paint.img_start_x = img_start_x;
 	paint.img_start_y = img_start_y;
