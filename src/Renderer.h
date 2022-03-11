@@ -85,6 +85,10 @@ public:
 	ofParameter<ofColor> stroke_color_2D;
 	ofParameter<ofColor> fill_color_2D;
 	ofParameter<float> stroke_width_2D;
+
+	ofParameter<ofColor> stroke_color_hsb;
+	ofParameter<ofColor> fill_color_hsb;
+
 	ofxButton b_undo;
 	ofxButton b_redo;
 	ofxButton b_clear;

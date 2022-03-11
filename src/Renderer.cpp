@@ -60,6 +60,8 @@ void Renderer::draw() {
 
 		case 1:
 
+			ofDisableDepthTest();
+			ofDisableLighting();
 			paint.draw();
 			primitive_choice.draw();
 			gui1.draw();
@@ -104,11 +106,13 @@ void Renderer::draw() {
 				break;
 			case 4:
 				camera->begin();
+				ofFill();
 				ofDrawBox(100, 100, 100);
 				camera->end();
 				break;
 			case 5:
 				camera->begin();
+				ofNoFill();
 				ofDrawSphere(100,100,100,100);
 				camera->end();
 				break;
@@ -187,9 +191,26 @@ void Renderer::GUI1Setup() {
 	indications_1.add(imageimport_1.setup("i ", "Importer une image"));
 	gui1.add(&indications_1);
 
-	stroke_color_2D.set("Couleur du trait", ofColor(0), ofColor(0, 0), ofColor(255, 255, 255));
-	fill_color_2D.set("Couleur de remplissage", ofColor(255), ofColor(0, 0), ofColor(255, 255, 255));
+	ofColor fill_start_color(rand() % 256, rand() % 256, rand() % 256, 255);
+	ofColor fill_hsb = ofColor::fromHsb(fill_start_color.getHue(),
+										fill_start_color.getSaturation(),
+										fill_start_color.getBrightness());
+
+	ofColor stroke_start_color(rand() % 256, rand() % 256, rand() % 256, 255);
+	ofColor stroke_hsb = ofColor::fromHsb(stroke_start_color.getHue(),
+										stroke_start_color.getSaturation(),
+										stroke_start_color.getBrightness());
+	ofColor min_color(0, 0);
+	ofColor min_hsb = ofColor::fromHsb(0,0,0);
+	ofColor max_color(255, 255);
+	ofColor max_hsb = ofColor::fromHsb(0, 0, 255);
+
+	stroke_color_2D.set("Couleur du trait RGBA", fill_start_color, min_color, max_color);
+	fill_color_2D.set("Couleur de remplissage RGBA", stroke_start_color, min_color, max_color);
 	stroke_width_2D.set("Epaisseur du trait", 1.0f, 0.0f, 10.0f);
+
+	stroke_color_hsb.set("Couleur du trait HSB", fill_hsb, min_hsb, max_hsb);
+	fill_color_hsb.set("Couleur de remplissage HSB", stroke_hsb, min_hsb, max_hsb);
 
 	gui1.add(fill_color_2D);
 	gui1.add(stroke_color_2D);
@@ -227,6 +248,8 @@ void Renderer::GUI1Setup() {
 	primitive_choice.add(b_undo.setup("Undo"));
 	primitive_choice.add(b_redo.setup("Redo"));
 	primitive_choice.add(b_clear.setup("Clear"));
+	primitive_choice.add(stroke_color_hsb);
+	primitive_choice.add(fill_color_hsb);
 
 
 }
@@ -356,6 +379,11 @@ void Renderer::updateGUI1Parameters(){
 	paint.fill_color = fill_color_2D;
 	paint.stroke_color = stroke_color_2D;
 	paint.stroke_width = stroke_width_2D;
+
+	ofLog() << "hue :" << paint.fill_color.getHue();
+	ofLog() << "brightness :" << paint.fill_color.getBrightness();
+	ofLog() << "saturation :" << paint.fill_color.getSaturation();
+	ofLog() << std::endl;
 
 	paint.img_start_x = img_start_x;
 	paint.img_start_y = img_start_y;
@@ -591,6 +619,10 @@ void Renderer::modeArbreFractal() {
 	{
 		int diffx = t_x - tx_previous;
 		int diffy = t_y - ty_previous;
+		
+		for (int j = 0; j < arbre.size(); j++)
+			arbre[j].modifier_trans(diffx,diffy);
+
 		ofMatrix4x4 m;
 		m.set(
 			1, 0, 0, 0,
@@ -601,11 +633,6 @@ void Renderer::modeArbreFractal() {
 		//mettre à jour les vi et vf
 		v1 = v1 * m;
 		v2 = v2 * m;
-
-		
-		for (int j = 0; j < arbre.size(); j++)
-			arbre[j].modifier_trans(diffx,diffy);
-		
 	}
 
 }
