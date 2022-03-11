@@ -20,6 +20,8 @@ public:
 	int mode = 0;
 	string current_mode = "None";
 
+	bool gui_hidden = false;
+
 	int modele = 1;
 
 	int camera_active = 0;
@@ -212,17 +214,14 @@ public:
 	bool is_camera_move_down;
 	bool is_camera_move_forward;
 	bool is_camera_move_backward;
-
 	bool is_camera_tilt_up;
 	bool is_camera_tilt_down;
 	bool is_camera_pan_left;
 	bool is_camera_pan_right;
 	bool is_camera_roll_left;
 	bool is_camera_roll_right;
-
 	bool is_camera_fov_narrow;
 	bool is_camera_fov_wide;
-
 	bool is_camera_perspective;
 
 	void setup();

@@ -95,38 +95,40 @@ void ofApp::keyReleased(int key){
 		//images
 	case 'u':
 		renderer.image_export();
-		break;
+		break;	
+	
 	case 'i':
-		if(renderer.mode == 1) renderer.image_import();
+		if(renderer.mode != 1) renderer.paint.draw_bg_image();
 		break;
 
+	case 'h':
+		renderer.gui_hidden = !renderer.gui_hidden;
+		break;
+
+
 		//different 3D modeles
-	case'z':
-		if (renderer.mode == 3)
-			renderer.modele = 1;
-		break;
-	case'x':
-		if (renderer.mode == 3)
-			renderer.modele = 2;
-		break;
-	case'c':
-		if (renderer.mode == 3)
-			renderer.modele = 3;
-		break;
-	case'v':
-		if (renderer.mode == 3)
-			renderer.modele = 4;
-		break;
-	case'b':
-		if (renderer.mode == 3)
-			renderer.modele = 5;
-		break;
+	
 	}
 	//camera
 	if (renderer.mode == 3)
 	{
 		switch (key)
 		{
+		case'z':
+				renderer.modele = 1;
+			break;
+		case'x':
+				renderer.modele = 2;
+			break;
+		case'c':
+				renderer.modele = 3;
+			break;
+		case'v':
+				renderer.modele = 4;
+			break;
+		case'b':
+				renderer.modele = 5;
+			break;
 		case 'o':
 			renderer.is_camera_perspective = false;
 			renderer.setup_camera();
@@ -138,6 +140,7 @@ void ofApp::keyReleased(int key){
 			renderer.setup_camera();
 			ofLog() << "<perpective projection>";
 			break;
+
 			//camera mouvements
 		case OF_KEY_LEFT:
 			renderer.is_camera_move_right = false;
@@ -183,6 +186,14 @@ void ofApp::keyReleased(int key){
 			break;
 		}
 
+	}
+	else if (renderer.mode == 1) {
+		switch (key)
+		{
+		case 'i':
+			renderer.image_import();
+		break;
+		}
 	}
 
 

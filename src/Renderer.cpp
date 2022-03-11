@@ -4,7 +4,6 @@ void Renderer::setup() {
 	ofBackground(50);
 	ofSetFrameRate(60);
 
-
 	setup_camera();
 
 	//Menu de base
@@ -55,7 +54,7 @@ void Renderer::draw() {
 
 			ofDisableDepthTest();
 			ofDisableLighting();
-			gui.draw();
+			if (!gui_hidden) gui.draw();
 			break;
 
 		case 1:
@@ -63,8 +62,8 @@ void Renderer::draw() {
 			ofDisableDepthTest();
 			ofDisableLighting();
 			paint.draw();
-			primitive_choice.draw();
-			gui1.draw();
+			if (!gui_hidden) primitive_choice.draw();
+			if (!gui_hidden) gui1.draw();
 			break;
 
 		//arbre fractal
@@ -72,7 +71,7 @@ void Renderer::draw() {
 
 			ofDisableDepthTest();
 			ofDisableLighting();
-			gui2.draw();
+			if (!gui_hidden) gui2.draw();
 			//déplacer le centre ;
 			ofTranslate(depart_x, depart_y);
 
@@ -121,7 +120,7 @@ void Renderer::draw() {
 			//Désactivation de l'illumination pour dessiner le gui
 			ofDisableDepthTest();
 			ofDisableLighting();
-			gui3.draw();
+			if(!gui_hidden) gui3.draw();
 			//Activation de l'illumination du modèle
 			ofEnableDepthTest();
 			ofEnableLighting();
