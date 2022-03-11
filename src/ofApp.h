@@ -28,6 +28,8 @@ class ofApp : public ofBaseApp{
 		bool is_key_press_y;
 		bool is_key_press_o;
 		bool is_key_press_p;
+		bool is_key_press_v;
+		bool is_key_press_b;
 
 		void setup();
 		void update();

@@ -29,6 +29,7 @@ void Dessin2D::add_shape(Primitive2D prim) {
 }
 
 void Dessin2D::clear_contents() {
+	backup.clear();
 	shapes.clear();
 	images.clear();
 }
@@ -45,17 +46,30 @@ void Dessin2D::draw_image() {
 			i.x2,
 			i.y2);
 	}
+	void Dessin2D::undo() {
+		if (shapes.size() > 0)
+		{
+			backup.push_back(shapes[shapes.size() - 1]);
+			shapes.pop_back();
+		}
+	}
 
-}
-void Dessin2D::draw() {
+
+	void Dessin2D::redo() {
+		if (backup.size() > 0)
+		{
+			shapes.push_back(backup[backup.size() - 1]);
+			backup.pop_back();
+		}
+	}
+	
+	void Dessin2D::draw() {
 
 
 
 	draw_image();
 
 	for (int i = 0; i < shapes.size(); i++) {
-
-
 
 		switch (shapes[i].type)
 		{
@@ -436,7 +450,6 @@ void Dessin2D::point(float x, float y, float radius) const {
 void Dessin2D::line(float x1, float y1, float x2, float y2) const {
 	ofDrawLine(x1, y1, x2, y2);
 }
-
 void Dessin2D::rectangle(float x1, float y1, float x2, float y2) const {
 
 	ofDrawRectangle(x1, y1, x2 - x1, y2 - y1);

@@ -25,7 +25,27 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-	
+	renderer.is_camera_move_forward = is_key_press_q;
+	renderer.is_camera_move_backward = is_key_press_w;
+
+	renderer.is_camera_move_left = is_key_press_left;
+	renderer.is_camera_move_right = is_key_press_right;
+
+	renderer.is_camera_move_up = is_key_press_down;
+	renderer.is_camera_move_down = is_key_press_up;
+
+	renderer.is_camera_tilt_up = is_key_press_a;
+	renderer.is_camera_tilt_down = is_key_press_s;
+
+	renderer.is_camera_pan_left = is_key_press_r;
+	renderer.is_camera_pan_right = is_key_press_e;
+
+	renderer.is_camera_roll_left = is_key_press_d;
+	renderer.is_camera_roll_right = is_key_press_f;
+
+	renderer.is_camera_fov_narrow = is_key_press_t;
+	renderer.is_camera_fov_wide = is_key_press_y;
+
 	renderer.update();
 
 }
@@ -166,6 +186,14 @@ void ofApp::keyReleased(int key){
 	case'c':
 		if (renderer.mode == 3)
 			renderer.modele = 3;
+		break;
+	case'v':
+		if (renderer.mode == 3)
+			renderer.modele = 4;
+		break;
+	case'b':
+		if (renderer.mode == 3)
+			renderer.modele = 5;
 		break;
 	}
 	//camera

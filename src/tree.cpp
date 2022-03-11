@@ -51,6 +51,19 @@ void Tree::modifier_epaisseur(float linewidth) {
 	m_linewidth = linewidth;
 }
 
+void Tree::modifier_trans(int diffx, int diffy)
+{
+	m.set(
+		1, 0, 0, 0,
+		0, 1, 0, 0,
+		0, 0, 1, 0,
+		diffx, diffy, 0, 1);
+
+	//mettre à jour les vi et vf
+	v1 = v1 * m;
+	v2 = v2 * m;	
+}
+
 void Tree::dynamic_random_color() {
 	unsigned int r = rand() % 256;
 	unsigned int g = rand() % 256;
@@ -108,6 +121,8 @@ void Tree::showellipse() {
 	vf2 = v2;
 	ofDrawEllipse(vf2, 10,50);
 }
+
+
 
 Tree::~Tree() {
 	//ofLog() << "objet détruit";

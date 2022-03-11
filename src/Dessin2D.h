@@ -42,6 +42,7 @@ class Dessin2D
 {
 public:
 	std::vector<ShapeProperties> shapes;
+	std::vector<ShapeProperties> backup;
 	Primitive2D shape_mode = Primitive2D::rectangle;
 	std::vector<ShapeProperties> images;
 
@@ -65,7 +66,9 @@ public:
 	bool mouse_press = false;
 
 	void add_shape(Primitive2D prim);
-	void clear_contents();
+	void clear_content();
+	void undo();
+	void redo();
 
 	void draw();
 

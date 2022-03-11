@@ -4,7 +4,7 @@ void Renderer::setup() {
 	ofBackground(50);
 	ofSetFrameRate(60);
 
-	//setup_camera();
+	setup_camera();
 
 	//Menu de base
 	GUISetup();
@@ -99,6 +99,16 @@ void Renderer::draw() {
 				piano.draw(OF_MESH_FILL);
 				camera->end();
 				break;
+			case 4:
+				camera->begin();
+				ofDrawBox(100, 100, 100);
+				camera->end();
+				break;
+			case 5:
+				camera->begin();
+				ofDrawSphere(100,100,100,100);
+				camera->end();
+				break;
 			}
 
 			//Désactivation de l'illumination pour dessiner le gui
@@ -176,16 +186,20 @@ void Renderer::GUI1Setup() {
 	indications_1.add(imageimport_1.setup("i ", "Importer une image"));
 	gui1.add(&indications_1);
 
-	stroke_color_2D.set("Couleur du trait", ofColor(120), ofColor(0, 0), ofColor(255, 255, 255));
+	stroke_color_2D.set("Couleur du trait", ofColor(0), ofColor(0, 0), ofColor(255, 255, 255));
 	fill_color_2D.set("Couleur de remplissage", ofColor(255), ofColor(0, 0), ofColor(255, 255, 255));
-	stroke_width_2D.set("Epaisseur du trait", 5.0f, 0.0f, 10.0f);
+	stroke_width_2D.set("Epaisseur du trait", 1.0f, 0.0f, 10.0f);
 
-	gui1.add(stroke_color_2D);
 	gui1.add(fill_color_2D);
+	gui1.add(stroke_color_2D);
 	gui1.add(stroke_width_2D);
 
+	gui1.add(b_undo.setup("Undo"));
+	gui1.add(b_redo.setup("Redo"));
+	gui1.add(b_clear.setup("Clear"));
+
 	primitive_choice.setup("Choix de primitive");
-	primitive_choice.setPosition(ofGetWidth() - 260, 10);
+	primitive_choice.setPosition(ofGetWidth() - 270, 10);
 	b_line.setup("Ligne");
 	b_ell.setup("Ellipse");
 	b_tri.setup("Triangle");
@@ -244,13 +258,13 @@ void Renderer::GUI2Setup() {
 	parametres.add(floatSlider3.setup("Epaisseur", 2, 0.0, 5));
 	parametres.add(togglestatic.setup("Static random colors", false));
 	parametres.add(toggledynamic.setup("Dynamic random colors", false));
+	parametres.add(intSlider_trans_x.setup("Translation X", depart_x, 0, depart_x * 2));
+	parametres.add(intSlider_trans_y.setup("Translation Y", depart_y, depart_y, 0));
 	gui2.add(&parametres);
 
-	treeColor.set("Couleur de l'arbre", ofColor(120), ofColor(0, 0), ofColor(255, 255, 255));
+	treeColor.set("Couleur de l'arbre", ofColor(255), ofColor(0, 0), ofColor(255, 255, 255));
 	gui2.add(treeColor);
 
-	depart_x = ofGetWindowWidth() / 2;
-	depart_y = ofGetWindowHeight();
 	longueurLigne = 300;
 	count = 0;
 
@@ -285,12 +299,15 @@ void Renderer::GUI3Setup() {
 	commandes_camera.add(er.setup("e, r ", "Yaw"));
 	commandes_camera.add(df.setup("d, f ", "Roll"));
 	commandes_camera.add(ty.setup("t, y ", "Zoom"));
+	commandes_camera.add(op.setup("o, p ", "Mode de projection"));
 	gui3.add(&commandes_camera);
 
 	types_objets.setup("Type de modele");
 	types_objets.add(l_alien.setup("z ", "Alien"));
 	types_objets.add(l_car.setup("x ", "Car"));
 	types_objets.add(l_piano.setup("c ", "Piano"));
+	types_objets.add(l_cube.setup("v ", "Cube"));
+	types_objets.add(l_sphere.setup("b ", "Sphere"));
 	gui3.add(&types_objets);
 
 	
@@ -298,9 +315,9 @@ void Renderer::GUI3Setup() {
 	car.loadModel("car.obj");
 	piano.loadModel("piano.obj");
 
-	light.setAmbientColor(ofColor(255, 0, 0));
+	light.setAmbientColor(ofColor(0, 200, 255));
 	light.setDiffuseColor(ofColor(255));
-	light.setPosition(0.0f,-1000.0f,1000.0f);
+	light.setPosition(0.0f, -1000.0f, 1000.0f);
 	light.enable();
 
 	camera_position = { 0.0f, 0.0f, 0.0f };
@@ -336,9 +353,6 @@ void Renderer::GUI3Setup() {
 	is_camera_perspective = true;
 
 	reset();
-
-	setup_camera();
-	
 }
 
 //updates
@@ -378,6 +392,12 @@ void Renderer::updateGUI2Parameters() {
 	v_previous = v;
 	v = treeColor;
 
+	tx_previous = t_x;
+	t_x = intSlider_trans_x.getParameter().cast<int>();
+
+	ty_previous = t_y;
+	t_y = intSlider_trans_y.getParameter().cast<int>();
+
 	cmode_2.setup("Current mode ", current_mode);
 }
 
@@ -398,6 +418,12 @@ void Renderer::updateGUI3Parameters() {
 
 //modes
 void Renderer::modeDessin2D() {
+	if (b_undo)
+		paint.undo();
+	if (b_redo)
+		paint.redo();
+	if (b_clear)
+		paint.clear_shapes();
 }
 
 void Renderer::modeArbreFractal() {
@@ -556,6 +582,16 @@ void Renderer::modeArbreFractal() {
 		for (int j = 0; j < arbre.size(); j++)
 			arbre[j].modifier_couleur(v);
 
+	//translation
+	if (t_x != tx_previous || t_y != ty_previous)
+	{
+		int diffx = t_x - tx_previous;
+		int diffy = t_y - ty_previous;
+
+		for (int j = 0; j < arbre.size(); j++)
+			arbre[j].modifier_trans(diffx,diffy);
+	}
+
 }
 
 void Renderer::modeModele3D() {
@@ -616,49 +652,8 @@ void Renderer::modeModele3D() {
 
 //camera
 void Renderer::setup_camera() {
-/*	alien.loadModel("alien.obj");
-	car.loadModel("car.obj");
-	piano.loadModel("piano.obj");
+	
 
-	light.setAmbientColor(ofColor(255, 0, 0));
-	light.setDiffuseColor(ofColor(255));
-	light.setPosition(0.0f, -1000.0f, 1000.0f);
-	light.enable();
-
-	camera_position = { 0.0f, 0.0f, 0.0f };
-	camera_target = { 0.0f, 0.0f, 0.0f };
-
-	camera_near = 50.0f;
-	camera_far = 1750.0f;
-
-	camera_fov = 60.0f;
-	camera_fov_delta = 30.0f;
-
-	speed_delta = 250.0f;
-
-	offset_objet = 64.0f;
-
-	is_camera_move_left = false;
-	is_camera_move_right = false;
-	is_camera_move_up = false;
-	is_camera_move_down = false;
-	is_camera_move_forward = false;
-	is_camera_move_backward = false;
-
-	is_camera_tilt_up = false;
-	is_camera_tilt_down = false;
-	is_camera_pan_left = false;
-	is_camera_pan_right = false;
-	is_camera_roll_left = false;
-	is_camera_roll_right = false;
-
-	is_camera_fov_narrow = false;
-	is_camera_fov_wide = false;
-
-	is_camera_perspective = true;
-
-	reset();
-*/
 
 
 	switch (camera_active)
@@ -748,4 +743,3 @@ void Renderer::reset()
 
 	ofLog() << "<reset>";
 }
-

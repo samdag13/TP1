@@ -9,8 +9,8 @@
 class Renderer
 {
 public:
-	int depart_x;
-	int depart_y;
+	int depart_x = ofGetWindowWidth() / 2;
+	int depart_y = ofGetWindowHeight();
 
 	int longueurLigne;
 
@@ -34,9 +34,12 @@ public:
 	ofParameter<float> s = 0.5;
 	float e_previous;
 	ofParameter<float> e = 2;
-
 	int c_previous;
 	ofParameter<int> c = 0;
+	int tx_previous;
+	ofParameter<int> t_x = depart_x;
+	int ty_previous;
+	ofParameter<int> t_y = depart_y;
 
 	//compter le nombre d'étages
 	int count;
@@ -82,6 +85,10 @@ public:
 	ofParameter<ofColor> stroke_color_2D;
 	ofParameter<ofColor> fill_color_2D;
 	ofParameter<float> stroke_width_2D;
+	ofxButton b_undo;
+	ofxButton b_redo;
+	ofxButton b_clear;
+
 	ofParameter<int> img_start_x;
 	ofParameter<int> img_start_y;
 	ofParameter<int> img_end_x;
@@ -108,6 +115,8 @@ public:
 
 	//input mode 2
 	ofxIntSlider intSlider;
+	ofxIntSlider intSlider_trans_x;
+	ofxIntSlider intSlider_trans_y;
 	ofxFloatSlider floatSlider1;
 	ofxFloatSlider floatSlider2;
 	ofxFloatSlider floatSlider3;
@@ -133,6 +142,8 @@ public:
 	ofxLabel l_alien;
 	ofxLabel l_car;
 	ofxLabel l_piano;
+	ofxLabel l_cube;
+	ofxLabel l_sphere;
 
 	ofxLabel fleches;
 	ofxLabel qw;
@@ -140,6 +151,7 @@ public:
 	ofxLabel er;
 	ofxLabel df;
 	ofxLabel ty;
+	ofxLabel op;
 
 	ofLight light;
 
