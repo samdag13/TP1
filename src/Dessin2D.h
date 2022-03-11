@@ -32,6 +32,7 @@ struct ShapeProperties {
 	int fill_b;
 	int fill_a;
 
+	ofImage image;
 	std::string path;
 };
 
@@ -48,6 +49,8 @@ public:
 	ofColor fill_color;
 	ofColor stroke_color;
 	ofColor cursor_press_color = ofColor(120, 35, 50, 255);
+
+	ofImage bg_image;
 
 
 
@@ -82,7 +85,7 @@ public:
 	void draw_cursor_ellipse(int x, int y) const;
 	void draw_cursor_rectangle(int x, int y) const;
 	void draw_cursor_x(int x, int y) const;
-	void draw_image();
+	void draw_bg_image();
 
 	void point(float x, float y, float radius) const;
 	void line(float x1, float y1, float x2, float y2) const;
