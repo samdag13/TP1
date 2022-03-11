@@ -445,16 +445,15 @@ void Renderer::modeDessin2D() {
 
 	if (b_undo) {
 		paint.undo();
-		Sleep(500);
+		Sleep(200);
 	}
 	if (b_redo) {
 		paint.redo();
-		Sleep(500);
+		Sleep(200);
 	}
-	if (b_clear) {
+	if (b_clear) 
 		paint.clear_contents();
-		Sleep(500);
-	}
+	
 }
 
 void Renderer::modeArbreFractal() {
