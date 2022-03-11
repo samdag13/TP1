@@ -4,6 +4,7 @@ void Renderer::setup() {
 	ofBackground(50);
 	ofSetFrameRate(60);
 
+
 	setup_camera();
 
 	//Menu de base
@@ -42,11 +43,9 @@ void Renderer::update() {
 
 void Renderer::draw() {
 
+
 	//Illumination seulement dans la visualisation 3D
-	if (mode != 3) {
-		ofDisableDepthTest();
-		ofDisableLighting();
-	}
+
 
 	//Dessin selon le mode actif
 	switch (mode)
@@ -54,6 +53,8 @@ void Renderer::draw() {
 		//dessin 2D
 		case 0:
 
+			ofDisableDepthTest();
+			ofDisableLighting();
 			gui.draw();
 			break;
 
@@ -67,6 +68,8 @@ void Renderer::draw() {
 		//arbre fractal
 		case 2:
 
+			ofDisableDepthTest();
+			ofDisableLighting();
 			gui2.draw();
 			//déplacer le centre ;
 			ofTranslate(depart_x, depart_y);
@@ -138,7 +141,6 @@ void Renderer::image_export()
 	ofFileDialogResult dir = ofSystemLoadDialog("Enregistrer dans...", true);
 
 	if (dir.bSuccess) {
-		ofLog() << dir.getPath();
 		string ext = ofSystemTextBoxDialog("Format fichier (jpg, png, ...)", "jpg");
 
 		file_name = dir.getPath() + "\\" + file_name + "." + ext;
@@ -146,7 +148,6 @@ void Renderer::image_export()
 	}
 
 
-	ofLog() << "<export image: " << file_name << ">";
 
 }
 
@@ -226,12 +227,7 @@ void Renderer::GUI1Setup() {
 	primitive_choice.add(&b_point);
 	primitive_choice.add(&b_tri);
 	primitive_choice.add(&import_img_sliders);
-	/*
-	primitive_choice.add(img_start_x);
-	primitive_choice.add(img_start_y);
-	primitive_choice.add(img_end_x);
-	primitive_choice.add(img_end_y);
-	*/
+
 
 }
 
@@ -418,12 +414,19 @@ void Renderer::updateGUI3Parameters() {
 
 //modes
 void Renderer::modeDessin2D() {
-	if (b_undo)
+
+	if (b_undo) {
 		paint.undo();
-	if (b_redo)
+		Sleep(500);
+	}
+	if (b_redo) {
 		paint.redo();
-	if (b_clear)
-		paint.clear_shapes();
+		Sleep(500);
+	}
+	if (b_clear) {
+		paint.clear_contents();
+		Sleep(500);
+	}
 }
 
 void Renderer::modeArbreFractal() {
@@ -666,7 +669,6 @@ void Renderer::setup_camera() {
 	case 1:
 		camera = &camera_back;
 		camera_name = "arrière";
-		ofLog() << camera;
 		break;
 
 	case 2:
@@ -712,7 +714,6 @@ void Renderer::setup_camera() {
 	camera->setPosition(camera_position);
 	camera->setOrientation(camera_orientation);
 
-	ofLog() << "<setup camera: " << camera_name << ">";
 }
 
 void Renderer::reset()
@@ -741,5 +742,4 @@ void Renderer::reset()
 	// caméra par défaut
 	camera_active = 0;
 
-	ofLog() << "<reset>";
 }

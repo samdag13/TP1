@@ -66,7 +66,7 @@ public:
 	bool mouse_press = false;
 
 	void add_shape(Primitive2D prim);
-	void clear_content();
+	void clear_contents();
 	void undo();
 	void redo();
 

@@ -36,7 +36,6 @@ void Dessin2D::clear_contents() {
 
 void Dessin2D::draw_image() {
 
-
 	for (ShapeProperties i : images) {
 		ofSetColor(255, 255, 255, 255);
 		i.image.load(i.path);
@@ -46,6 +45,8 @@ void Dessin2D::draw_image() {
 			i.x2,
 			i.y2);
 	}
+
+}
 	void Dessin2D::undo() {
 		if (shapes.size() > 0)
 		{
