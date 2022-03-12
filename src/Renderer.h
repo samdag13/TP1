@@ -170,6 +170,7 @@ public:
 
 	//Input mode 3
 	ofxPanel modele_input;
+	ofxGuiGroup controle_action;
 
 	ofParameter<float> x_modele;
 	ofParameter<float> y_modele;
@@ -180,6 +181,9 @@ public:
 	ofxButton cube;
 	ofxButton sphere;
 	ofxButton add_modele;
+	ofxButton undo3;
+	ofxButton redo3;
+	ofxButton clear3;
 
 	ofxToggle fill;
 

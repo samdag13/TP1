@@ -31,6 +31,7 @@ void Dessin3D::draw() {
 }
 void Dessin3D::clear_modeles() {
 	modeles.clear();
+	backups.clear();
 }
 void Dessin3D::undo() {
 	if (modeles.size() > 0)

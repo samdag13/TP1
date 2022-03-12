@@ -31,8 +31,6 @@ void Dessin2D::add_shape(Primitive2D prim) {
 void Dessin2D::clear_contents() {
 	backup.clear();
 	shapes.clear();
-	images.clear();
-	images_properties.clear();
 }
 
 void Dessin2D::add_bg_image() {

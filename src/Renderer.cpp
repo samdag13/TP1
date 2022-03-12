@@ -91,12 +91,12 @@ void Renderer::draw() {
 			camera->begin();
 			if (sphere) {
 				scene.mode = TypeModele::sphere;
-				ofVec3f pos(x_modele, y_modele, z_modele);
+				ofVec3f pos(x_modele, -y_modele, -z_modele);
 				scene.sphere(fill, color_modele, pos, scale_modele);
 			}
 			else if (cube) {
 				scene.mode = TypeModele::cube;
-				ofVec3f pos(x_modele, y_modele, z_modele);
+				ofVec3f pos(x_modele, -y_modele, -z_modele);
 				scene.cube(fill, color_modele, pos, scale_modele);
 			}
 			scene.draw();
@@ -377,6 +377,12 @@ void Renderer::GUI3Setup() {
 	modele_input.add(add_modele.setup("Dessiner!"));
 	modele_input.add(fill.setup("Remplissage", false));
 
+	controle_action.setup("Controle d'actions");
+	controle_action.add(undo3.setup("Undo"));
+	controle_action.add(redo3.setup("Redo"));
+	controle_action.add(clear3.setup("Clear"));
+
+	modele_input.add(&controle_action);
 	
 	alien.loadModel("alien.obj");
 	car.loadModel("car.obj");
@@ -507,6 +513,16 @@ void Renderer::updateGUI3Parameters() {
 	if (sphere) scene.mode = TypeModele::sphere;
 
 	if (add_modele) scene.add_modele();
+
+	if (redo3) {
+		scene.redo();
+	}
+	else if (undo3) { 
+		scene.undo();
+	}
+	else if (clear3) {
+		scene.clear_modeles();
+	}
 
 	c_previous = c;
 	c = camSlider.getParameter().cast<int>();
