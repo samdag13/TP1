@@ -98,7 +98,7 @@ void ofApp::keyReleased(int key){
 		break;	
 	
 	case 'i':
-		if(renderer.mode != 1) renderer.paint.draw_bg_image();
+		if(renderer.mode != 1) renderer.paint.add_bg_image();
 		break;
 
 	case 'h':
@@ -267,6 +267,11 @@ void ofApp::windowResized(int w, int h) {
 		renderer.img_start_y.set("y start position", 100, 0, ofGetWindowHeight());
 		renderer.img_end_x.set("x end position", 500, 0, ofGetWindowWidth());
 		renderer.img_end_y.set("y end position", 500, 0, ofGetWindowHeight());
+	}
+	else if (renderer.mode == 2) {
+
+		renderer.intSlider_trans_x.set("Translation X", renderer.depart_x, 0, ofGetWindowWidth());
+		renderer.intSlider_trans_y.set("Translation Y", renderer.depart_y, 0, ofGetWindowHeight());
 	}
 }
 

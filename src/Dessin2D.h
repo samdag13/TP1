@@ -74,7 +74,7 @@ public:
 	void undo();
 	void redo();
 
-	void draw();
+	void draw() const;
 
 	void add_image();
 	void draw_outline() const;
@@ -85,7 +85,8 @@ public:
 	void draw_cursor_ellipse(int x, int y) const;
 	void draw_cursor_rectangle(int x, int y) const;
 	void draw_cursor_x(int x, int y) const;
-	void draw_bg_image();
+	void draw_bg_image() const;
+	void add_bg_image();
 
 	void point(float x, float y, float radius) const;
 	void line(float x1, float y1, float x2, float y2) const;

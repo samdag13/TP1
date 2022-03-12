@@ -15,7 +15,6 @@ public:
 	int longueurLigne;
 
 	Dessin2D paint;
-
 	//mode
 	int mode = 0;
 	string current_mode = "None";
@@ -129,8 +128,8 @@ public:
 
 	//input mode 2
 	ofxIntSlider intSlider;
-	ofxIntSlider intSlider_trans_x;
-	ofxIntSlider intSlider_trans_y;
+	ofParameter<int> intSlider_trans_x;
+	ofParameter<int> intSlider_trans_y;
 	ofxFloatSlider floatSlider1;
 	ofxFloatSlider floatSlider2;
 	ofxFloatSlider floatSlider3;

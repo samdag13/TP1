@@ -71,14 +71,18 @@ void Renderer::draw() {
 
 			ofDisableDepthTest();
 			ofDisableLighting();
-			if (!gui_hidden) gui2.draw();
 			//déplacer le centre ;
+
+			if(paint.bg_image.isAllocated()) paint.draw_bg_image();
 			ofTranslate(depart_x, depart_y);
 
 			for (int j = arbre.size() - 1; j >= 0; j--)
 			{
 				arbre[j].showLine();
 			}
+
+			ofTranslate(-depart_x, -depart_y);
+			if (!gui_hidden) gui2.draw();
 
 			break;
 
@@ -291,8 +295,8 @@ void Renderer::GUI2Setup() {
 	parametres.add(floatSlider3.setup("Epaisseur", 2, 0.0, 5));
 	parametres.add(togglestatic.setup("Static random colors", false));
 	parametres.add(toggledynamic.setup("Dynamic random colors", false));
-	parametres.add(intSlider_trans_x.setup("Translation X", depart_x, 0, ofGetWindowWidth()));
-	parametres.add(intSlider_trans_y.setup("Translation Y", depart_y, 0, ofGetWindowHeight()));
+	parametres.add(intSlider_trans_x.set("Translation X", depart_x, 0, ofGetWindowWidth()));
+	parametres.add(intSlider_trans_y.set("Translation Y", depart_y, 0, ofGetWindowHeight()));
 	gui2.add(&parametres);
 
 	treeColor.set("Couleur de l'arbre", ofColor(255), ofColor(0, 0), ofColor(255, 255, 255));
@@ -453,10 +457,10 @@ void Renderer::updateGUI2Parameters() {
 	v = treeColor;
 
 	tx_previous = t_x;
-	t_x = intSlider_trans_x.getParameter().cast<int>();
+	t_x = intSlider_trans_x;
 
 	ty_previous = t_y;
-	t_y = intSlider_trans_y.getParameter().cast<int>();
+	t_y = intSlider_trans_y;
 
 	cmode_2.setup("Current mode ", current_mode);
 }

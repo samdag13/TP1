@@ -35,11 +35,15 @@ void Dessin2D::clear_contents() {
 	images_properties.clear();
 }
 
-void Dessin2D::draw_bg_image() {
+void Dessin2D::add_bg_image() {
+	ofFileDialogResult result = ofSystemLoadDialog("Choisissez une image");
+	bg_image.load(result.filePath);
+}
+
+void Dessin2D::draw_bg_image() const {
 
 
-		ofFileDialogResult result = ofSystemLoadDialog("Choisissez une image");
-		bg_image.load(result.filePath);
+
 		ofSetColor(255, 255, 255, 255);
 		bg_image.draw(
 			0,
@@ -66,7 +70,7 @@ void Dessin2D::redo() {
 	}
 }
 	
-void Dessin2D::draw() {
+void Dessin2D::draw() const{
 
 	for (int i = 0; i < shapes.size(); i++) {
 
@@ -179,10 +183,10 @@ void Dessin2D::draw() {
 				shapes[i].fill_b,
 				shapes[i].fill_a);
 			triangle(
-				shapes[i].x1,
-				shapes[i].y1,
-				shapes[i].width,
-				shapes[i].height);
+				shapes[i].x2,
+				shapes[i].y2,
+				shapes[i].x1 - shapes[i].x2,
+				shapes[i].y1 - shapes[i].y2);
 			ofNoFill();
 			ofSetLineWidth(shapes[i].stroke_width);
 			ofSetColor(
@@ -191,10 +195,10 @@ void Dessin2D::draw() {
 				shapes[i].stroke_b,
 				shapes[i].stroke_a);
 			triangle(
-				shapes[i].x1,
-				shapes[i].y1,
-				shapes[i].width,
-				shapes[i].height);
+				shapes[i].x2,
+				shapes[i].y2,
+				shapes[i].x1 - shapes[i].x2,
+				shapes[i].y1 - shapes[i].y2);
 
 			break;
 		case Primitive2D::image:
