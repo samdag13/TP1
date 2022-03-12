@@ -568,7 +568,7 @@ void Renderer::modeArbreFractal() {
 			{
 				arbre.pop_back();
 			}
-			count--;
+			if(count>0) count--;
 
 		}
 
@@ -582,18 +582,18 @@ void Renderer::modeArbreFractal() {
 
 		}
 	}
-	else
-		if (p > p_previous)
+	else if (p > p_previous)
 		{
-			if (count == 0)
+			if (count == 0 && p >= 1)
 			{
 				//premiere branche
 				Tree tree(v1, v2, 0, 0, v, e);
 				arbre.push_back(tree);
 				count++;
-			}
-			else
-				for (int i = p_previous; i != p; i++) {
+			} 
+			int tmp = 0;
+			p_previous == 0 ? tmp++ : tmp = p_previous;
+				for (int i = tmp; i != p; i++) {
 					for (int j = arbre.size() - 1; j >= 0; j--)
 					{
 						if (!arbre[j].finished)
@@ -703,7 +703,6 @@ void Renderer::modeArbreFractal() {
 		for (int j = 0; j < arbre.size(); j++)
 			arbre[j].static_random_color();
 	else if (toggledynamic) {
-		Sleep(1000);
 		for (int j = 0; j < arbre.size(); j++)
 			arbre[j].dynamic_random_color();
 	}
