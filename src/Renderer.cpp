@@ -88,25 +88,38 @@ void Renderer::draw() {
 
 		//modele 3D
 		case 3:
-
+			camera->begin();
+			if (sphere) {
+				scene.mode = TypeModele::sphere;
+				ofVec3f pos(x_modele, y_modele, z_modele);
+				scene.sphere(fill, color_modele, pos, scale_modele);
+			}
+			else if (cube) {
+				scene.mode = TypeModele::cube;
+				ofVec3f pos(x_modele, y_modele, z_modele);
+				scene.cube(fill, color_modele, pos, scale_modele);
+			}
+			scene.draw();
 			//Définit le modèle à rendre
 			switch (modele)
 			{
 			case 1:
-				camera->begin();
+				//camera->begin();
 				alien.draw(OF_MESH_FILL);
-				camera->end();
+				alien.getPosition();
+				//camera->end();
 				break;
 			case 2:
-				camera->begin();
+				//camera->begin();
 				car.draw(OF_MESH_FILL);
-				camera->end();
+				//camera->end();
 				break;
 			case 3:
-				camera->begin();
+				//camera->begin();
 				piano.draw(OF_MESH_FILL);
-				camera->end();
+				//camera->end();
 				break;
+				/*
 			case 4:
 				camera->begin();
 				ofFill();
@@ -119,12 +132,16 @@ void Renderer::draw() {
 				ofDrawSphere(100,100,100,100);
 				camera->end();
 				break;
+				*/
 			}
-
+			camera->end();
 			//Désactivation de l'illumination pour dessiner le gui
 			ofDisableDepthTest();
 			ofDisableLighting();
-			if(!gui_hidden) gui3.draw();
+			if (!gui_hidden) {
+				gui3.draw();
+				modele_input.draw();
+			}
 			//Activation de l'illumination du modèle
 			ofEnableDepthTest();
 			ofEnableLighting();
@@ -347,6 +364,19 @@ void Renderer::GUI3Setup() {
 	types_objets.add(l_sphere.setup("b ", "Sphere"));
 	gui3.add(&types_objets);
 
+
+	modele_input.setup("Dessin 3D");
+	modele_input.setPosition(ofGetWindowWidth() - 300, 10);
+	modele_input.add(x_modele.set("Position en X", 0, -ofGetWindowWidth(), ofGetWindowWidth()));
+	modele_input.add(y_modele.set("Position en Y", 0, -ofGetWindowHeight(), ofGetWindowHeight()));
+	modele_input.add(z_modele.set("Position en Z", 0, -1000, 1000));
+	modele_input.add(scale_modele.set("Facteur de proportion", 50, 0, 1000));
+	modele_input.add(color_modele.set("Couleur RGBA", ofColor(50), ofColor(0, 0), ofColor(255, 255)));
+	modele_input.add(cube.setup("Cube"));
+	modele_input.add(sphere.setup("Sphere"));
+	modele_input.add(add_modele.setup("Dessiner!"));
+	modele_input.add(fill.setup("Remplissage", false));
+
 	
 	alien.loadModel("alien.obj");
 	car.loadModel("car.obj");
@@ -466,6 +496,18 @@ void Renderer::updateGUI2Parameters() {
 }
 
 void Renderer::updateGUI3Parameters() {
+	scene.x = x_modele;
+	scene.y = y_modele;
+	scene.z = z_modele;
+	scene.scale_modele = scale_modele;
+	scene.color = color_modele;
+	scene.is_filled = fill;
+
+	if (cube) scene.mode = TypeModele::cube;
+	if (sphere) scene.mode = TypeModele::sphere;
+
+	if (add_modele) scene.add_modele();
+
 	c_previous = c;
 	c = camSlider.getParameter().cast<int>();
 

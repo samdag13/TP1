@@ -183,6 +183,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
     <ClCompile Include="src\Dessin2D.cpp" />
+    <ClCompile Include="src\Dessin3D.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\tree.cpp" />
     <ClCompile Include="..\..\..\addons\ofxAssimpModelLoader\src\ofxAssimpAnimation.cpp" />
@@ -203,6 +204,7 @@
   <ItemGroup>
     <ClInclude Include="src\ofApp.h" />
     <ClInclude Include="src\Dessin2D.h" />
+    <ClInclude Include="src\Dessin3D.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\tree.h" />
     <ClInclude Include="..\..\..\addons\ofxAssimpModelLoader\src\ofxAssimpAnimation.h" />

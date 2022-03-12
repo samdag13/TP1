@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "tree.h"
 #include "Dessin2D.h"
+#include "Dessin3D.h"
 #include "ofxGui.h"
 #include "ofxAssimpModelLoader.h"
 
@@ -15,6 +16,7 @@ public:
 	int longueurLigne;
 
 	Dessin2D paint;
+	Dessin3D scene;
 	//mode
 	int mode = 0;
 	string current_mode = "None";
@@ -165,6 +167,21 @@ public:
 	ofxLabel df;
 	ofxLabel ty;
 	ofxLabel op;
+
+	//Input mode 3
+	ofxPanel modele_input;
+
+	ofParameter<float> x_modele;
+	ofParameter<float> y_modele;
+	ofParameter<float> z_modele;
+	ofParameter<float> scale_modele;
+	ofParameter<ofColor> color_modele;
+
+	ofxButton cube;
+	ofxButton sphere;
+	ofxButton add_modele;
+
+	ofxToggle fill;
 
 	ofLight light;
 
