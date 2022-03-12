@@ -123,12 +123,7 @@ void ofApp::keyReleased(int key){
 		case'c':
 				renderer.modele = 3;
 			break;
-		case'v':
-				renderer.modele = 4;
-			break;
-		case'b':
-				renderer.modele = 5;
-			break;
+
 		case 'o':
 			renderer.is_camera_perspective = false;
 			renderer.setup_camera();

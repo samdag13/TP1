@@ -218,8 +218,6 @@ void Dessin2D::add_image() {
 
 	ofFileDialogResult result = ofSystemLoadDialog("Choisissez une image");
 
-
-
 	if (result.bSuccess) { 
 
 		ShapeProperties img;

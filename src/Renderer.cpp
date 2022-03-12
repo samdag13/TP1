@@ -360,8 +360,6 @@ void Renderer::GUI3Setup() {
 	types_objets.add(l_alien.setup("z ", "Alien"));
 	types_objets.add(l_car.setup("x ", "Car"));
 	types_objets.add(l_piano.setup("c ", "Piano"));
-	types_objets.add(l_cube.setup("v ", "Cube"));
-	types_objets.add(l_sphere.setup("b ", "Sphere"));
 	gui3.add(&types_objets);
 
 
