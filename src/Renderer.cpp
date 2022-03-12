@@ -108,7 +108,6 @@ void Renderer::draw() {
 			case 1:
 				//camera->begin();
 				alien.draw(OF_MESH_FILL);
-				alien.getPosition();
 				//camera->end();
 				break;
 			case 2:
