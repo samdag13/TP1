@@ -186,6 +186,7 @@ public:
 	ofxButton clear3;
 
 	ofxToggle fill;
+	ofxToggle grille;
 
 	ofLight light;
 

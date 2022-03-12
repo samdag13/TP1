@@ -88,7 +88,9 @@ void Renderer::draw() {
 
 		//modele 3D
 		case 3:
+
 			camera->begin();
+			if(grille) ofDrawGrid(10.0f, 100, false, true, true ,true);
 			if (sphere) {
 				scene.mode = TypeModele::sphere;
 				ofVec3f pos(x_modele, -y_modele, -z_modele);
@@ -376,6 +378,7 @@ void Renderer::GUI3Setup() {
 	modele_input.add(sphere.setup("Sphere"));
 	modele_input.add(add_modele.setup("Dessiner!"));
 	modele_input.add(fill.setup("Remplissage", false));
+	modele_input.add(grille.setup("Grille", false));
 
 	controle_action.setup("Controle d'actions");
 	controle_action.add(undo3.setup("Undo"));
@@ -448,8 +451,6 @@ void Renderer::updateGUI1Parameters(){
 		fill_color_hue = paint.fill_color.getHue();
 		fill_color_sat = paint.fill_color.getSaturation();
 		fill_color_bri = paint.fill_color.getBrightness();
-
-
 	}
 
 	else if(tmp2 != fill || tmp1 != stroke) {
@@ -512,13 +513,18 @@ void Renderer::updateGUI3Parameters() {
 	if (cube) scene.mode = TypeModele::cube;
 	if (sphere) scene.mode = TypeModele::sphere;
 
-	if (add_modele) scene.add_modele();
+	if (add_modele) {
+		scene.add_modele();
+		Sleep(200);
+	}
 
 	if (redo3) {
 		scene.redo();
+		Sleep(200);
 	}
 	else if (undo3) { 
 		scene.undo();
+		Sleep(200);
 	}
 	else if (clear3) {
 		scene.clear_modeles();
