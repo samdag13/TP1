@@ -344,7 +344,6 @@ void Renderer::GUI3Setup() {
 	indications_3.add(arbrefractal_3.setup("2 ", "Arbre fractal"));
 	indications_3.add(modele3d_3.setup("3 ", "Modele 3D"));
 	indications_3.add(imageexport_3.setup("u ", "Screenshot"));
-	indications_3.add(imageimport_3.setup("i ", "Importer une image"));
 	gui3.add(&indications_3);
 
 	commandes_camera.setup("Commandes de la camera");
@@ -438,11 +437,11 @@ void Renderer::updateGUI1Parameters(){
 	ofColor stroke = ofColor::fromHsb(stroke_color_hue, stroke_color_sat, stroke_color_bri, tmp1.a);
 	ofColor tmp2 = fill_color_2D;
 	ofColor fill = ofColor::fromHsb(fill_color_hue, fill_color_sat, fill_color_bri, tmp2.a);
-	
+
+	paint.stroke_width = stroke_width_2D;
 	if (paint.fill_color != fill_color_2D || paint.stroke_color != stroke_color_2D) {
 		paint.fill_color = fill_color_2D;
 		paint.stroke_color = stroke_color_2D;
-		paint.stroke_width = stroke_width_2D;
 
 		stroke_color_hue = paint.stroke_color.getHue();
 		stroke_color_sat = paint.stroke_color.getSaturation();

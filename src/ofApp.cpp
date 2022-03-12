@@ -98,7 +98,7 @@ void ofApp::keyReleased(int key){
 		break;	
 	
 	case 'i':
-		if(renderer.mode != 1) renderer.paint.add_bg_image();
+		if(renderer.mode == 2) renderer.paint.add_bg_image();
 		break;
 
 	case 'h':
