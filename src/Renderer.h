@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "tree.h"
 #include "Dessin2D.h"
+#include "Dessin3D.h"
 #include "ofxGui.h"
 #include "ofxAssimpModelLoader.h"
 
@@ -15,10 +16,12 @@ public:
 	int longueurLigne;
 
 	Dessin2D paint;
-
+	Dessin3D scene;
 	//mode
 	int mode = 0;
 	string current_mode = "None";
+
+	bool gui_hidden = false;
 
 	int modele = 1;
 
@@ -85,6 +88,18 @@ public:
 	ofParameter<ofColor> stroke_color_2D;
 	ofParameter<ofColor> fill_color_2D;
 	ofParameter<float> stroke_width_2D;
+
+	ofxGuiGroup stroke_HSB;
+	ofParameter<float> stroke_color_hue;
+	ofParameter<float> stroke_color_sat;
+	ofParameter<float> stroke_color_bri;
+
+
+	ofxGuiGroup fill_HSB;
+	ofParameter<float> fill_color_hue;
+	ofParameter<float> fill_color_sat;
+	ofParameter<float> fill_color_bri;
+
 	ofxButton b_undo;
 	ofxButton b_redo;
 	ofxButton b_clear;
@@ -115,8 +130,8 @@ public:
 
 	//input mode 2
 	ofxIntSlider intSlider;
-	ofxIntSlider intSlider_trans_x;
-	ofxIntSlider intSlider_trans_y;
+	ofParameter<int> intSlider_trans_x;
+	ofParameter<int> intSlider_trans_y;
 	ofxFloatSlider floatSlider1;
 	ofxFloatSlider floatSlider2;
 	ofxFloatSlider floatSlider3;
@@ -152,6 +167,26 @@ public:
 	ofxLabel df;
 	ofxLabel ty;
 	ofxLabel op;
+
+	//Input mode 3
+	ofxPanel modele_input;
+	ofxGuiGroup controle_action;
+
+	ofParameter<float> x_modele;
+	ofParameter<float> y_modele;
+	ofParameter<float> z_modele;
+	ofParameter<float> scale_modele;
+	ofParameter<ofColor> color_modele;
+
+	ofxButton cube;
+	ofxButton sphere;
+	ofxButton add_modele;
+	ofxButton undo3;
+	ofxButton redo3;
+	ofxButton clear3;
+
+	ofxToggle fill;
+	ofxToggle grille;
 
 	ofLight light;
 
@@ -200,17 +235,14 @@ public:
 	bool is_camera_move_down;
 	bool is_camera_move_forward;
 	bool is_camera_move_backward;
-
 	bool is_camera_tilt_up;
 	bool is_camera_tilt_down;
 	bool is_camera_pan_left;
 	bool is_camera_pan_right;
 	bool is_camera_roll_left;
 	bool is_camera_roll_right;
-
 	bool is_camera_fov_narrow;
 	bool is_camera_fov_wide;
-
 	bool is_camera_perspective;
 
 	void setup();

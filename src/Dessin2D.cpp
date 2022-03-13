@@ -31,15 +31,17 @@ void Dessin2D::add_shape(Primitive2D prim) {
 void Dessin2D::clear_contents() {
 	backup.clear();
 	shapes.clear();
-	images.clear();
-	images_properties.clear();
 }
 
-void Dessin2D::draw_bg_image() {
+void Dessin2D::add_bg_image() {
+	ofFileDialogResult result = ofSystemLoadDialog("Choisissez une image");
+	bg_image.load(result.filePath);
+}
+
+void Dessin2D::draw_bg_image() const {
 
 
-		ofFileDialogResult result = ofSystemLoadDialog("Choisissez une image");
-		bg_image.load(result.filePath);
+
 		ofSetColor(255, 255, 255, 255);
 		bg_image.draw(
 			0,
@@ -66,7 +68,7 @@ void Dessin2D::redo() {
 	}
 }
 	
-void Dessin2D::draw() {
+void Dessin2D::draw() const{
 
 	for (int i = 0; i < shapes.size(); i++) {
 
@@ -82,9 +84,9 @@ void Dessin2D::draw() {
 				shapes[i].fill_b,
 				shapes[i].fill_a);
 			point(
-				shapes[i].x1 + (shapes[i].width/2.0f),
-				shapes[i].y1 + (shapes[i].height / 2.0f),
-				shapes[i].radius);
+				shapes[i].x1,
+				shapes[i].y1,
+				max(abs(shapes[i].x2 - shapes[i].x1), abs(shapes[i].y2 - shapes[i].y1)));
 
 			ofNoFill();
 			ofSetLineWidth(shapes[i].stroke_width);
@@ -94,9 +96,9 @@ void Dessin2D::draw() {
 				shapes[i].stroke_b,
 				shapes[i].stroke_a);
 			point(
-				shapes[i].x1 + (shapes[i].width / 2.0f),
-				shapes[i].y1 + (shapes[i].height / 2.0f),
-				shapes[i].radius);
+				shapes[i].x1,
+				shapes[i].y1,
+				max(abs(shapes[i].x2 - shapes[i].x1), abs(shapes[i].y2 - shapes[i].y1)));
 			break;
 
 		case Primitive2D::line:
@@ -179,10 +181,10 @@ void Dessin2D::draw() {
 				shapes[i].fill_b,
 				shapes[i].fill_a);
 			triangle(
-				shapes[i].x1,
-				shapes[i].y1,
-				shapes[i].width,
-				shapes[i].height);
+				shapes[i].x2,
+				shapes[i].y2,
+				shapes[i].x1 - shapes[i].x2,
+				shapes[i].y1 - shapes[i].y2);
 			ofNoFill();
 			ofSetLineWidth(shapes[i].stroke_width);
 			ofSetColor(
@@ -191,10 +193,10 @@ void Dessin2D::draw() {
 				shapes[i].stroke_b,
 				shapes[i].stroke_a);
 			triangle(
-				shapes[i].x1,
-				shapes[i].y1,
-				shapes[i].width,
-				shapes[i].height);
+				shapes[i].x2,
+				shapes[i].y2,
+				shapes[i].x1 - shapes[i].x2,
+				shapes[i].y1 - shapes[i].y2);
 
 			break;
 		case Primitive2D::image:
@@ -215,8 +217,6 @@ void Dessin2D::draw() {
 void Dessin2D::add_image() {
 
 	ofFileDialogResult result = ofSystemLoadDialog("Choisissez une image");
-
-
 
 	if (result.bSuccess) { 
 
@@ -257,17 +257,17 @@ void Dessin2D::draw_outline() const {
 		ofSetCircleResolution(100);
 		ofSetColor(fill_color);
 		point(
-			x2 + (w/2.0f),
-			y2 + (h / 2.0f),
-			sqrt(pow(h, 2) + pow(w, 2)) / 2.0f);
+			x1,
+			y1,
+			max(abs(x2 - x1), abs(y2 - y1)));
 
 		ofNoFill();
 		ofSetLineWidth(stroke_width);
 		ofSetColor(stroke_color);
 		point(
-			x2 + (w / 2.0f),
-			y2 + (h / 2.0f),
-			sqrt(pow(h, 2) + pow(w, 2)) / 2.0f);
+			x1,
+			y1,
+			max(abs(x2-x1), abs(y2-y1)));
 		break;
 
 	case Primitive2D::line:
