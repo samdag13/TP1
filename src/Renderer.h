@@ -72,8 +72,6 @@ public:
 	ofxLabel dessin2d;
 	ofxLabel arbrefractal;
 	ofxLabel modele3d;
-	ofxLabel imageexport;
-	ofxLabel imageimport;
 
 	//indications pour mode 1
 	ofxLabel cmode_1;

@@ -120,20 +120,6 @@ void Renderer::draw() {
 				piano.draw(OF_MESH_FILL);
 				//camera->end();
 				break;
-				/*
-			case 4:
-				camera->begin();
-				ofFill();
-				ofDrawBox(100, 100, 100);
-				camera->end();
-				break;
-			case 5:
-				camera->begin();
-				ofNoFill();
-				ofDrawSphere(100,100,100,100);
-				camera->end();
-				break;
-				*/
 			}
 			camera->end();
 			//Désactivation de l'illumination pour dessiner le gui
@@ -193,8 +179,6 @@ void Renderer::GUISetup() {
 	gui.add(dessin2d.setup("1 ", "Dessin 2D"));
 	gui.add(arbrefractal.setup("2 ", "Arbre fractal"));
 	gui.add(modele3d.setup("3 ", "Modele 3D"));
-	gui.add(imageexport.setup("u ", "Screenshot"));
-	gui.add(imageimport.setup("i ", "Importer une image"));
 }
 
 //Dessin2D
