@@ -60,6 +60,8 @@ void Renderer::draw() {
 
 		case 1:
 
+			ofDisableDepthTest();
+			ofDisableLighting();
 			paint.draw();
 			primitive_choice.draw();
 			gui1.draw();
@@ -84,6 +86,8 @@ void Renderer::draw() {
 		//modele 3D
 		case 3:
 
+
+
 			//Définit le modèle à rendre
 			switch (modele)
 			{
@@ -104,11 +108,13 @@ void Renderer::draw() {
 				break;
 			case 4:
 				camera->begin();
+				ofFill();
 				ofDrawBox(100, 100, 100);
 				camera->end();
 				break;
 			case 5:
 				camera->begin();
+				ofFill();
 				ofDrawSphere(100,100,100,100);
 				camera->end();
 				break;
@@ -121,6 +127,7 @@ void Renderer::draw() {
 			//Activation de l'illumination du modèle
 			ofEnableDepthTest();
 			ofEnableLighting();
+
 			break;
 	}
 }
@@ -141,7 +148,7 @@ void Renderer::image_export()
 	ofFileDialogResult dir = ofSystemLoadDialog("Enregistrer dans...", true);
 
 	if (dir.bSuccess) {
-		string ext = ofSystemTextBoxDialog("Format fichier (jpg, png, ...)", "jpg");
+		string ext = ofSystemTextBoxDialog("Format fichier (jpg, png, ...)", "png");
 
 		file_name = dir.getPath() + "\\" + file_name + "." + ext;
 		image.save(file_name);
@@ -254,8 +261,8 @@ void Renderer::GUI2Setup() {
 	parametres.add(floatSlider3.setup("Epaisseur", 2, 0.0, 5));
 	parametres.add(togglestatic.setup("Static random colors", false));
 	parametres.add(toggledynamic.setup("Dynamic random colors", false));
-	parametres.add(intSlider_trans_x.setup("Translation X", depart_x, 0, ofGetWindowWidth()));
-	parametres.add(intSlider_trans_y.setup("Translation Y", depart_y, 0, ofGetWindowHeight()));
+	parametres.add(intSlider_trans_x.setup("Translation X", t_x, 0, ofGetWindowWidth()));
+	parametres.add(intSlider_trans_y.setup("Translation Y", t_y, 0, ofGetWindowHeight()));
 	gui2.add(&parametres);
 
 	treeColor.set("Couleur de l'arbre", ofColor(255), ofColor(0, 0), ofColor(255, 255, 255));
@@ -265,7 +272,7 @@ void Renderer::GUI2Setup() {
 	count = 0;
 
 	v1.set(0, 0, 1, 1);
-	v2.set(0, -longueurLigne, 1, 1);
+	v2.set(0, 0 -longueurLigne, 1, 1);
 	v = treeColor;
 }
 
@@ -590,6 +597,7 @@ void Renderer::modeArbreFractal() {
 	{
 		int diffx = t_x - tx_previous;
 		int diffy = t_y - ty_previous;
+
 		ofMatrix4x4 m;
 		m.set(
 			1, 0, 0, 0,
@@ -600,11 +608,9 @@ void Renderer::modeArbreFractal() {
 		//mettre à jour les vi et vf
 		v1 = v1 * m;
 		v2 = v2 * m;
-
 		
 		for (int j = 0; j < arbre.size(); j++)
 			arbre[j].modifier_trans(diffx,diffy);
-		
 	}
 
 }
